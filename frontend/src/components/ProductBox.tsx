@@ -1,5 +1,3 @@
-import {useEffect} from "react";
-
 interface ProductSearchBoxProps {
     id: number;
     name: string;
@@ -11,14 +9,9 @@ interface ProductSearchBoxProps {
 }
 
 export default function ProductBox(props: ProductSearchBoxProps) {
-
-    useEffect(() => {
-        console.log(props);
-    }, []);
-
     return (
         <div
-            className="block rounded-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
+            className="lg:w-64 w-40 rounded-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
             <a href="#!">
                 <img
                     className="object-cover w-full h-48 rounded-t-lg"
