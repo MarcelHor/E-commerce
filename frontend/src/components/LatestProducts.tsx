@@ -24,6 +24,7 @@ export default function LatestProducts() {
         },
     };
 
+
     useEffect(() => {
         axios.get('http://localhost:8000/api/v1/latest-products/')
             .then(function (response) {
@@ -68,6 +69,7 @@ export default function LatestProducts() {
                                 image={product.get_image}
                                 thumbnail={product.get_thumbnail}
                                 description={product.description}
+                                url={product.get_absolute_url}
                             />
                         ))}
                     </Carousel>

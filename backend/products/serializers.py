@@ -12,4 +12,5 @@ class ProductSerializer(serializers.ModelSerializer):
             'price',
             'get_image',
             'get_thumbnail',
+            'in_stock',
         )

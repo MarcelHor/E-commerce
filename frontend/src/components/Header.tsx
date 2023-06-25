@@ -1,5 +1,6 @@
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faShoppingCart, faUser} from '@fortawesome/free-solid-svg-icons'
+import {Link} from "react-router-dom";
 
 export default function Header() {
     return (
@@ -7,7 +8,7 @@ export default function Header() {
             <header className="bg-gray-700 text-white p-4 lg:p-8">
                 <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center">
                     <h1 className="text-2xl font-bold mb-4 lg:mb-0">
-                        <a href="#" className="text-white hover:text-gray-400">Name and logo</a>
+                        <Link to={"/"}>E-Commerce</Link>
                     </h1>
 
                     <form className="flex items-center w-full lg:w-1/3 mb-4 lg:mb-0">
