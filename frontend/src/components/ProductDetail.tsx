@@ -1,5 +1,3 @@
-import Header from "./Header.tsx";
-import LatestProducts from "./LatestProducts.tsx";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -34,11 +32,14 @@ export default function ProductDetail() {
         fetchProductDetail();
     }, [url]);
 
+    useEffect(() => {
+        document.title = `Product | ${product?.name}`;
+    }, [product]);
+
     if (!product) return null;
 
     return (
         <>
-            <Header/>
             <div className={"flex w-full justify-center items-center space-x-10 p-8"}>
                 <div className={"w-1/3 h-1/3"}>
                     <img src={`http://localhost:8000${product.get_image}`} alt={product.name}
@@ -75,7 +76,6 @@ export default function ProductDetail() {
                     </div>
                 </div>
             </div>
-            <LatestProducts/>
         </>
     );
 }
