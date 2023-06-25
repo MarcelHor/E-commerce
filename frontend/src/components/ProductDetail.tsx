@@ -1,5 +1,5 @@
-import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import {useParams} from "react-router-dom";
+import {useEffect, useState} from "react";
 import axios from "axios";
 
 interface ProductDetailProps {
@@ -26,6 +26,20 @@ export default function ProductDetail() {
         } catch (error) {
             console.log(error);
         }
+    }
+
+    const addToCart = (product: ProductDetailProps, quantity: number) => {
+        let cart: {
+            [key: string]: { product: ProductDetailProps, quantity: number }
+        } = JSON.parse(localStorage.getItem('cart') || '{}');
+
+        if (cart[product.id]) {
+            cart[product.id].quantity += quantity;
+        } else {
+            cart[product.id] = {product, quantity};
+        }
+
+        localStorage.setItem('cart', JSON.stringify(cart));
     }
 
     useEffect(() => {
@@ -67,7 +81,10 @@ export default function ProductDetail() {
                         </button>
                     </div>
                     <div className="flex space-x-2">
-                        <button className={"bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"}>
+                        <button
+                            className={"bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"}
+                            onClick={() => addToCart(product, quantity)}
+                        >
                             Add to cart
                         </button>
                         <button className={"bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"}>
