@@ -1,6 +1,7 @@
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
+import {useCart} from "./CartProvider.tsx";
 
 interface ProductDetailProps {
     id: number;
@@ -14,9 +15,11 @@ interface ProductDetailProps {
 }
 
 export default function ProductDetail() {
+    const {addToCart} = useCart();
     const url = useParams();
     const [product, setProduct] = useState<ProductDetailProps | null>(null);
     const [quantity, setQuantity] = useState(1);
+    const [showPopup, setShowPopup] = useState(false);
 
     const fetchProductDetail = async () => {
         try {
@@ -28,19 +31,11 @@ export default function ProductDetail() {
         }
     }
 
-    const addToCart = (product: ProductDetailProps, quantity: number) => {
-        let cart: {
-            [key: string]: { product: ProductDetailProps, quantity: number }
-        } = JSON.parse(localStorage.getItem('cart') || '{}');
-
-        if (cart[product.id]) {
-            cart[product.id].quantity += quantity;
-        } else {
-            cart[product.id] = {product, quantity};
-        }
-
-        localStorage.setItem('cart', JSON.stringify(cart));
-    }
+    const handleAddToCart = (product: ProductDetailProps, quantity: number) => {
+        addToCart(product, quantity);
+        setShowPopup(true);
+        setTimeout(() => setShowPopup(false), 3000); // Hide the popup after 3 seconds
+    };
 
     useEffect(() => {
         fetchProductDetail();
@@ -83,7 +78,7 @@ export default function ProductDetail() {
                     <div className="flex space-x-2">
                         <button
                             className={"bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"}
-                            onClick={() => addToCart(product, quantity)}
+                            onClick={() => handleAddToCart(product, quantity)}
                         >
                             Add to cart
                         </button>
@@ -93,6 +88,18 @@ export default function ProductDetail() {
                     </div>
                 </div>
             </div>
+            {showPopup && (
+                <div style={{
+                    position: 'fixed',
+                    bottom: '20px',
+                    right: '20px',
+                    backgroundColor: 'lightgreen',
+                    padding: '10px',
+                    borderRadius: '5px',
+                }}>
+                    Item added to cart!
+                </div>
+            )}
         </>
     );
 }

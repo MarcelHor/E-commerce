@@ -2,32 +2,12 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faShoppingCart, faUser} from '@fortawesome/free-solid-svg-icons'
 import {Link} from "react-router-dom";
 import SearchBar from "./SearchBar.tsx";
-import {useEffect, useState} from "react";
+import {useCart} from "./CartProvider.tsx";
 
-interface ProductDetailProps {
-    id: number;
-    name: string;
-    price: number;
-    get_absolute_url: string;
-    get_image: string;
-    get_thumbnail: string;
-    description: string;
-    in_stock: boolean;
-}
 
 export default function Header() {
-    const [cartLength, setCartLength] = useState(0);
+    const  {getCartCount} = useCart();
 
-    useEffect(() => {
-        let cart: {
-            [key: string]: { product: ProductDetailProps, quantity: number }
-        } = JSON.parse(localStorage.getItem('cart') || '{}');
-        let total = 0;
-        for (let key in cart) {
-            total += cart[key].quantity;
-        }
-        setCartLength(total);
-    }, []);
 
     return (
         <>
@@ -51,7 +31,7 @@ export default function Header() {
                         <Link className="text-white text-xl px-4 py-2 rounded-md flex items-center" to={"/cart"}>
                             <FontAwesomeIcon icon={faShoppingCart}/>
                             <span
-                                className="bg-red-500 text-white rounded-full px-2 py-1 text-xs font-bold ml-2">{cartLength}</span>
+                                className="bg-red-500 text-white rounded-full px-2 py-1 text-xs font-bold ml-2">{getCartCount()}</span>
                         </Link>
                     </div>
                 </div>

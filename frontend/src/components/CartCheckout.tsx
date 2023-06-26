@@ -1,42 +1,25 @@
-import {useEffect, useState} from "react";
-
-interface ProductDetailProps {
-    id: number;
-    name: string;
-    price: number;
-    get_absolute_url: string;
-    get_image: string;
-    get_thumbnail: string;
-    description: string;
-    in_stock: boolean;
-}
+import {useCart} from "./CartProvider.tsx";
 
 export default function CartCheckout() {
 
-    const [cart, setCart] = useState<{ [key: string]: { product: ProductDetailProps, quantity: number } }>({});
-    const [total, setTotal] = useState(0);
-
-    useEffect(() => {
-        let cart: {
-            [key: string]: { product: ProductDetailProps, quantity: number }
-        } = JSON.parse(localStorage.getItem('cart') || '{}');
-
-        let total = 0;
-        for (let key in cart) {
-            total += cart[key].quantity * cart[key].product.price;
-        }
-        setCart(cart);
-        setTotal(total);
-    }, []);
-
+    const {cart, removeFromCart, addToCart, getCartTotal, getCartCount} = useCart();
 
     return (
         <>
+            {getCartCount() === 0 ?
+                <div className={"flex flex-col w-full justify-center items-center space-x-10 p-8"}>
+                    <div className={"w-1/2"}>
+                        <h1 className={"text-2xl font-bold mb-4 lg:mb-0"}>Your Cart is Empty</h1>
+                    </div>
+                </div>
+                :
+
                 <div className={"flex flex-col w-full justify-center items-center space-x-10 p-8"}>
                     <div className={"w-1/2"}>
                         <table className="table-auto w-full">
                             <thead>
                             <tr>
+                                <th className={"text-left"}>Remove</th>
                                 <th className={"text-left"}>Product</th>
                                 <th className={"text-left"}>Quantity</th>
                                 <th className={"text-left"}>Price</th>
@@ -47,6 +30,15 @@ export default function CartCheckout() {
                             {Object.keys(cart).map((key, index) => {
                                 return (
                                     <tr key={index}>
+
+                                        <td className={"border border-gray-400 px-4 py-2"}>
+                                            <button
+                                                className={"bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"}
+                                                onClick={() => removeFromCart(cart[key].product, cart[key].quantity)
+                                                }
+                                            > X
+                                            </button>
+                                        </td>
                                         <td className={"border border-gray-400 px-4 py-2"}>
                                             <img src={`http://localhost:8000${cart[key].product.get_thumbnail}`}
                                                  alt={cart[key].product.name}
@@ -54,9 +46,21 @@ export default function CartCheckout() {
                                             <span className={"ml-2 font-semibold"}>{cart[key].product.name}</span>
                                         </td>
                                         <td className={"border border-gray-400 px-4 py-2"}>
-                                            <button className={"px-2 py-1 bg-gray-200"}>-</button>
-                                            <span className={"mx-2"}>{cart[key].quantity}</span>
-                                            <button className={"px-2 py-1 bg-gray-200"}>+</button>
+                                            <button
+                                                className={"bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"}
+                                                onClick={() => removeFromCart(cart[key].product, 1)
+                                                }
+                                            >
+                                                -
+                                            </button>
+                                            <input type="text" className={"w-10 h-10 text-center"}
+                                                   value={cart[key].quantity} readOnly/>
+                                            <button
+                                                className={"bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"}
+                                                onClick={() => addToCart(cart[key].product, 1)}
+                                            >
+                                                +
+                                            </button>
                                         </td>
                                         <td className={"border border-gray-400 px-4 py-2"}>
                                             <span>{cart[key].product.price}</span>
@@ -71,12 +75,13 @@ export default function CartCheckout() {
                         </table>
                     </div>
                 </div>
-
+            }
             <div className={"flex flex-col w-full justify-center items-center space-x-10 p-8"}>
                 <div className={"w-1/2"}>
-                    <h2 className={"text-3xl font-bold"}>Total: {total}</h2>
+                    <h2 className={"text-3xl font-bold"}>Total: {getCartTotal()}</h2>
                 </div>
             </div>
+
         </>
     );
 }
