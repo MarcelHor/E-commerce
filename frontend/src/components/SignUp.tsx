@@ -2,18 +2,15 @@ import {FormEvent, useState} from "react";
 import axios from "axios";
 
 export default function SignUp() {
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(false);
     const [email, setEmail] = useState("");
-    const [repeatPassword, setRepeatPassword] = useState("");
 
-    //TODO:
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         try {
             const response = await axios.post("http://localhost:8000/api/v1/users/", {
+                email,
                 password,
             });
             console.log(response);
@@ -42,30 +39,6 @@ export default function SignUp() {
                     </div>
                 </div>
                 <div className={"flex flex-col mb-4"}>
-                    <label htmlFor={"firstName"} className={"mb-2 font-semibold"}>First Name</label>
-                    <input
-                        type="text"
-                        name={"firstName"}
-                        id={"firstName"}
-                        placeholder={"First Name"}
-                        className={"border border-gray-500 p-2 rounded-md"}
-                        value={firstName}
-                        onChange={(e) => setFirstName(e.target.value)}
-                    />
-                </div>
-                <div className={"flex flex-col mb-4"}>
-                    <label htmlFor={"lastName"} className={"mb-2 font-semibold"}>Last Name</label>
-                    <input
-                        type="text"
-                        name={"lastName"}
-                        id={"lastName"}
-                        placeholder={"Last Name"}
-                        className={"border border-gray-500 p-2 rounded-md"}
-                        value={lastName}
-                        onChange={(e) => setLastName(e.target.value)}
-                    />
-                </div>
-                <div className={"flex flex-col mb-4"}>
                     <label htmlFor={"password"} className={"mb-2 font-semibold"}>Password</label>
                     <input
                         type="password"
@@ -75,18 +48,6 @@ export default function SignUp() {
                         className={"border border-gray-500 p-2 rounded-md"}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                    />
-                </div>
-                <div className={"flex flex-col mb-4"}>
-                    <label htmlFor={"repeatPassword"} className={"mb-2 font-semibold"}>Repeat Password</label>
-                    <input
-                        type="password"
-                        name={"repeatPassword"}
-                        id={"repeatPassword"}
-                        placeholder={"Repeat Password"}
-                        className={"border border-gray-500 p-2 rounded-md"}
-                        value={repeatPassword}
-                        onChange={(e) => setRepeatPassword(e.target.value)}
                     />
                 </div>
                 <button

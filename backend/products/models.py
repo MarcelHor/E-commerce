@@ -80,3 +80,4 @@ class Product(models.Model):
                 return self.thumbnail.url
             else:
                 return ''
+

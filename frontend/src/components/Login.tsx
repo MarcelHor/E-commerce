@@ -1,5 +1,5 @@
 import {FormEvent, useState} from "react";
-import axios from "axios";
+import {useAuth} from "./AuthProvider.tsx";
 
 
 export default function Login() {
@@ -8,17 +8,18 @@ export default function Login() {
     const [password, setPassword] = useState("");
     const [error, setError] = useState(false);
 
+    const {loginUser} = useAuth();
+
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
+
         try {
-            const response = await axios.post("http://localhost:8000/api/v1/users/", {
-                password,
-            });
-            console.log(response);
+            await loginUser(e);
         } catch (error) {
             setError(true);
         }
     };
+
 
     return (
         <div className={"flex justify-center items-center mt-14"}>
