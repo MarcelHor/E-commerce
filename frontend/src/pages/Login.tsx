@@ -1,5 +1,5 @@
 import {FormEvent, useState} from "react";
-import {useAuth} from "./AuthProvider.tsx";
+import {useAuth} from "../context/AuthProvider.tsx";
 
 
 export default function Login() {

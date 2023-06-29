@@ -67,11 +67,13 @@ export const AuthProvider = ({children}: { children: ReactNode }) => {
         setAuthTokens(null);
         setUser(null);
         localStorage.removeItem("authTokens");
-        navigate("/login");
+        navigate("/");
+        setLoading(false);
     }
 
     const updateToken = async () => {
         if (!authTokens || !authTokens.refresh) {
+            logoutUser()
             return;
         }
         try {
@@ -97,8 +99,6 @@ export const AuthProvider = ({children}: { children: ReactNode }) => {
     }
 
     useEffect(() => {
-        console.log("refreshing token")
-        console.log(authTokens?.access)
         if(loading){
             updateToken();
         }
@@ -119,7 +119,7 @@ export const AuthProvider = ({children}: { children: ReactNode }) => {
             logoutUser: logoutUser,
             authTokens: authTokens
         }}>
-            {loading? null : children}
+            {loading ? <p>Loading...</p> : children}
         </AuthContext.Provider>
     )
 }

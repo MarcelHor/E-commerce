@@ -2,8 +2,8 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faShoppingCart, faUser} from '@fortawesome/free-solid-svg-icons'
 import {Link} from "react-router-dom";
 import SearchBar from "./SearchBar.tsx";
-import {useCart} from "./CartProvider.tsx";
-import {useAuth} from "./AuthProvider.tsx";
+import {useCart} from "../context/CartProvider.tsx";
+import {useAuth} from "../context/AuthProvider.tsx";
 
 
 export default function Header() {

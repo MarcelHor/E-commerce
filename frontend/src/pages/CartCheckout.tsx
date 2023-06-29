@@ -1,4 +1,4 @@
-import {useCart} from "./CartProvider.tsx";
+import {useCart} from "../context/CartProvider.tsx";
 
 export default function CartCheckout() {
 

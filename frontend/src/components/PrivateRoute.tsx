@@ -1,5 +1,5 @@
 import {Navigate} from "react-router-dom";
-import {useAuth} from "./AuthProvider.tsx";
+import {useAuth} from "../context/AuthProvider.tsx";
 
 const PrivateRoute = ({children}: any) => {
     const {user} = useAuth();

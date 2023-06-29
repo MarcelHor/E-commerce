@@ -1,6 +1,6 @@
-import LatestProducts from "./LatestProducts.tsx";
+import LatestProducts from "../components/LatestProducts.tsx";
 import {useEffect} from "react";
-import CategoriesList from "./CategoriesList.tsx";
+import CategoriesList from "../components/CategoriesList.tsx";
 
 
 export default function HomePage() {

@@ -1,7 +1,7 @@
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
-import {useCart} from "./CartProvider.tsx";
+import {useCart} from "../context/CartProvider.tsx";
 
 interface ProductDetailProps {
     id: number;
