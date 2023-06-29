@@ -3,10 +3,12 @@ import {faShoppingCart, faUser} from '@fortawesome/free-solid-svg-icons'
 import {Link} from "react-router-dom";
 import SearchBar from "./SearchBar.tsx";
 import {useCart} from "./CartProvider.tsx";
+import {useAuth} from "./AuthProvider.tsx";
 
 
 export default function Header() {
     const  {getCartCount} = useCart();
+    const {user, logoutUser} = useAuth();
 
 
     return (
@@ -22,10 +24,8 @@ export default function Header() {
                     <div className="flex items-center lg:space-x-4 lg:justify-end justify-between">
                         <div className="flex items-center space-x-4 lg:mb-0">
                             <FontAwesomeIcon icon={faUser} className="text-2xl"/>
-                            <div className="text-sm">
-                                <p className="text-white leading-none">User Name</p>
-                                <p className="text-gray-400">Log Out</p>
-                            </div>
+                            {user ? <span className="text-xl">{user.exp}</span> : <Link to={"/login"} className="text-xl">Login</Link>}
+                            {user ? <button onClick={logoutUser} className="text-xl">Logout</button> : <Link to={"/sign-up"} className="text-xl">Register</Link>}
                         </div>
 
                         <Link className="text-white text-xl px-4 py-2 rounded-md flex items-center" to={"/cart"}>

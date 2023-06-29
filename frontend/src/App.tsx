@@ -13,11 +13,12 @@ import AuthProvider from "./components/AuthProvider.tsx";
 export default function App() {
     return (
         <>
-            <AuthProvider>
-                <CartProvider>
-                    <BrowserRouter>
+            <BrowserRouter>
+                <AuthProvider>
+                    <CartProvider>
                         <Header/>
                         <Routes>
+
                             <Route path="/" element={<HomePage/>}/>
                             <Route path="/products/:category/:slug" element={<ProductDetail/>}/>
                             <Route path="/products/:category" element={<ProductList/>}/>
@@ -26,10 +27,13 @@ export default function App() {
                             <Route path="*" element={<h1>Not Found</h1>}/>
                             <Route path={"/login"} element={<Login/>}/>
                             <Route path={"/private"} element={<PrivateRoute><h1>Private</h1></PrivateRoute>}/>
+
                         </Routes>
-                    </BrowserRouter>
-                </CartProvider>
-            </AuthProvider>
+                    </CartProvider>
+                </AuthProvider>
+            </BrowserRouter>
+
+
         </>
 
     );

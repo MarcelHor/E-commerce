@@ -1,18 +1,26 @@
-import {createContext, FormEvent, useState, ReactNode, useContext} from 'react';
+import {createContext, FormEvent, useState, ReactNode, useContext, useEffect} from 'react';
+import jwt_decode from "jwt-decode";
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
-interface User {
-    // Define the properties of a User here
-    // e.g., name, email, etc.
-}
+//
+// interface User {
+//     email: string;
+// }
 
 interface AuthContextProps {
     loginUser: (e: FormEvent) => Promise<void>;
-    user: User | null
+    user: any | null
+    logoutUser: () => void;
+    authTokens: Tokens | null
+}
+
+interface Tokens {
+    access: string;
+    refresh: string;
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
-
 
 export const useAuth = () => {
     const context = useContext(AuthContext);
@@ -22,9 +30,16 @@ export const useAuth = () => {
     return context;
 }
 
-export const AuthProvider = ({children}: {children: ReactNode}) => {
-    const [authToken, setAuthToken] = useState<string | null>( null );
-    const [user, setUser] = useState<User | null>( null );
+export const AuthProvider = ({children}: { children: ReactNode }) => {
+
+    const storedTokens = localStorage.getItem("authTokens");
+    const initialTokens = storedTokens ? JSON.parse(storedTokens) : null;
+    const [authTokens, setAuthTokens] = useState<Tokens | null>(initialTokens);
+    const [user, setUser] = useState<any | null>(() => authTokens ? jwt_decode(authTokens.access) : null);
+    const [loading, setLoading] = useState<boolean>(true);
+
+    const navigate = useNavigate();
+
 
     const loginUser = async (e: FormEvent) => {
         e.preventDefault();
@@ -39,21 +54,72 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
                 email: email,
                 password: password,
             });
-            console.log(response);
-            setAuthToken(response.data.access);
-            console.log(authToken);
-            setUser(response.data.user);
+            setAuthTokens(response.data);
+            setUser(jwt_decode(response.data.access));
+            localStorage.setItem("authTokens", JSON.stringify(response.data));
+            navigate("/");
         } catch (error) {
             console.log(error);
         }
     };
 
+    const logoutUser = () => {
+        setAuthTokens(null);
+        setUser(null);
+        localStorage.removeItem("authTokens");
+        navigate("/login");
+    }
+
+    const updateToken = async () => {
+        if (!authTokens || !authTokens.refresh) {
+            return;
+        }
+        try {
+            const response = await axios.post("http://localhost:8000/api/v1/token/refresh/", {
+                refresh: authTokens?.refresh,
+            });
+
+            const updatedToken = {
+                access: response.data.access,
+                refresh: authTokens.refresh,
+            };
+
+            setAuthTokens(updatedToken);
+            setUser(jwt_decode(response.data.access));
+            localStorage.setItem("authTokens", JSON.stringify(updatedToken));
+        } catch (error) {
+            logoutUser()
+        }
+
+        if(loading){
+            setLoading(false)
+        }
+    }
+
+    useEffect(() => {
+        console.log("refreshing token")
+        console.log(authTokens?.access)
+        if(loading){
+            updateToken();
+        }
+
+        const fourMinutes = 1000 * 60 * 4
+        const interval = setInterval(() => {
+            if(authTokens){
+                updateToken()
+            }
+        },fourMinutes)
+        return () => clearInterval(interval)
+    }, [authTokens]);
+
     return (
         <AuthContext.Provider value={{
             loginUser: loginUser,
-            user: user
+            user: user,
+            logoutUser: logoutUser,
+            authTokens: authTokens
         }}>
-            {children}
+            {loading? null : children}
         </AuthContext.Provider>
     )
 }
