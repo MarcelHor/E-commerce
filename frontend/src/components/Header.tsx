@@ -24,8 +24,8 @@ export default function Header() {
                     <div className="flex items-center lg:space-x-4 lg:justify-end justify-between">
                         <div className="flex items-center space-x-4 lg:mb-0">
                             <FontAwesomeIcon icon={faUser} className="text-2xl"/>
-                            {user ? <span className="text-xl">{user.exp}</span> : <Link to={"/login"} className="text-xl">Login</Link>}
-                            {user ? <button onClick={logoutUser} className="text-xl">Logout</button> : <Link to={"/sign-up"} className="text-xl">Register</Link>}
+                            {user ? <span className="text-xl">{user.email}</span> : <Link to={"/login"} className="text-xl">Login</Link>}
+                            {user ? <button onClick={logoutUser} className="text-xl">Logout</button> : <Link to={"/register"} className="text-xl">Register</Link>}
                         </div>
 
                         <Link className="text-white text-xl px-4 py-2 rounded-md flex items-center" to={"/cart"}>

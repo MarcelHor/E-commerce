@@ -5,7 +5,7 @@ import Header from "./components/Header.tsx";
 import ProductList from "./components/ProductList.tsx";
 import CartCheckout from "./pages/CartCheckout.tsx";
 import CartProvider from "./context/CartProvider.tsx";
-import SignUp from "./pages/SignUp.tsx";
+import Register from "./pages/Register.tsx";
 import Login from "./pages/Login.tsx";
 import PrivateRoute from "./components/PrivateRoute.tsx";
 import AuthProvider from "./context/AuthProvider.tsx";
@@ -22,7 +22,7 @@ export default function App() {
                             <Route path="/products/:category/:slug" element={<ProductDetail/>}/>
                             <Route path="/products/:category" element={<ProductList/>}/>
                             <Route path="/cart" element={<CartCheckout/>}/>
-                            <Route path="/sign-up" element={<SignUp/>}/>
+                            <Route path="/register" element={<Register/>}/>
                             <Route path="*" element={<h1>Not Found</h1>}/>
                             <Route path={"/login"} element={<Login/>}/>
                             <Route path={"/private"} element={<PrivateRoute><h1>Private</h1></PrivateRoute>}/>
