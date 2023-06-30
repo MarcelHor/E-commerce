@@ -7,8 +7,9 @@ import CartCheckout from "./pages/CartCheckout.tsx";
 import CartProvider from "./context/CartProvider.tsx";
 import Register from "./pages/Register.tsx";
 import Login from "./pages/Login.tsx";
-import PrivateRoute from "./components/PrivateRoute.tsx";
+import PrivateRoute from "./utils/PrivateRoute.tsx";
 import AuthProvider from "./context/AuthProvider.tsx";
+import Profile from "./pages/Profile.tsx";
 
 export default function App() {
     return (
@@ -25,7 +26,7 @@ export default function App() {
                             <Route path="/register" element={<Register/>}/>
                             <Route path="*" element={<h1>Not Found</h1>}/>
                             <Route path={"/login"} element={<Login/>}/>
-                            <Route path={"/private"} element={<PrivateRoute><h1>Private</h1></PrivateRoute>}/>
+                            <Route path={"/private"} element={<PrivateRoute><Profile/></PrivateRoute>}/>
                         </Routes>
                     </CartProvider>
                 </AuthProvider>

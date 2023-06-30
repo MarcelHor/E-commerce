@@ -13,6 +13,7 @@ interface AuthContextProps {
     user: any | null
     logoutUser: () => void;
     authTokens: Tokens | null
+    updateToken: () => void;
 }
 
 interface Tokens {
@@ -73,9 +74,10 @@ export const AuthProvider = ({children}: { children: ReactNode }) => {
 
     const updateToken = async () => {
         if (!authTokens || !authTokens.refresh) {
-            logoutUser()
-            return;
+            logoutUser();
+            return Promise.resolve(); // return resolved Promise if we don't have tokens or refresh token
         }
+
         try {
             const response = await axios.post("http://localhost:8000/api/v1/token/refresh/", {
                 refresh: authTokens?.refresh,
@@ -89,34 +91,27 @@ export const AuthProvider = ({children}: { children: ReactNode }) => {
             setAuthTokens(updatedToken);
             setUser(jwt_decode(response.data.access));
             localStorage.setItem("authTokens", JSON.stringify(updatedToken));
+            return Promise.resolve();
         } catch (error) {
-            logoutUser()
+            logoutUser();
+            return Promise.reject();
         }
+    };
 
-        if(loading){
-            setLoading(false)
-        }
-    }
 
     useEffect(() => {
-        if(loading){
-            updateToken();
-        }
-        const fourMinutes = 1000 * 60 * 4
-        const interval = setInterval(() => {
-            if(authTokens){
-                updateToken()
-            }
-        },fourMinutes)
-        return () => clearInterval(interval)
-    }, [authTokens]);
+        updateToken().then(() => setLoading(false));
+    }, []);
+
+
 
     return (
         <AuthContext.Provider value={{
             loginUser: loginUser,
             user: user,
             logoutUser: logoutUser,
-            authTokens: authTokens
+            authTokens: authTokens,
+            updateToken: updateToken
         }}>
             {loading ? <p>Loading...</p> : children}
         </AuthContext.Provider>
