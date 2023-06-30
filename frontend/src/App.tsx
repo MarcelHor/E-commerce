@@ -26,7 +26,7 @@ export default function App() {
                             <Route path="/register" element={<Register/>}/>
                             <Route path="*" element={<h1>Not Found</h1>}/>
                             <Route path={"/login"} element={<Login/>}/>
-                            <Route path={"/private"} element={<PrivateRoute><Profile/></PrivateRoute>}/>
+                            <Route path={"/profile"} element={<PrivateRoute><Profile/></PrivateRoute>}/>
                         </Routes>
                     </CartProvider>
                 </AuthProvider>

@@ -22,9 +22,12 @@ export default function Header() {
                     <SearchBar/>
 
                     <div className="flex items-center lg:space-x-4 lg:justify-end justify-between">
+
                         <div className="flex items-center space-x-4 lg:mb-0">
-                            <FontAwesomeIcon icon={faUser} className="text-2xl"/>
-                            {user ? <span className="text-xl">{user.email}</span> : <Link to={"/login"} className="text-xl">Login</Link>}
+                            {user ? <Link to={"/profile"} className="text-xl space-x-2 flex items-center">
+                                <FontAwesomeIcon icon={faUser} className="text-2xl"/>
+                                <span className="text-xl">{user.email} </span>
+                            </Link> : <Link to={"/login"} className="text-xl">Login</Link>}
                             {user ? <button onClick={logoutUser} className="text-xl">Logout</button> : <Link to={"/register"} className="text-xl">Register</Link>}
                         </div>
 
