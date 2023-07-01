@@ -1,8 +1,8 @@
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
-import ProductDetail from "./components/ProductDetail.tsx";
+import ProductDetail from "./pages/ProductDetail.tsx";
 import HomePage from "./pages/HomePage.tsx";
 import Header from "./components/Header.tsx";
-import ProductList from "./components/ProductList.tsx";
+import ProductList from "./pages/ProductList.tsx";
 import CartCheckout from "./pages/CartCheckout.tsx";
 import CartProvider from "./context/CartProvider.tsx";
 import Register from "./pages/Register.tsx";

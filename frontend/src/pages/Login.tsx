@@ -2,9 +2,7 @@ import {FormEvent, useEffect, useState} from "react";
 import {useAuth} from "../context/AuthProvider.tsx";
 import {useNavigate} from "react-router-dom";
 
-
 export default function Login() {
-
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(false);
@@ -24,49 +22,52 @@ export default function Login() {
 
         try {
             await loginUser(e);
+            setError(false);
         } catch (error) {
             setError(true);
         }
     };
 
-
     return (
-        <div className={"flex justify-center items-center mt-14"}>
-            <form onSubmit={handleSubmit} className={"w-1/3"}>
-                <h1 className={"text-3xl font-bold mb-8"}>Login</h1>
-                {error && <p className={"text-red-500 mb-4"}>Invalid credentials</p>}
-                <div className={"flex flex-col mb-4"}>
-                    <div className={"flex flex-col mb-4"}>
-                        <label htmlFor={"email"} className={"mb-2 font-semibold"}>Email</label>
-                        <input
-                            type="email"
-                            name={"email"}
-                            id={"email"}
-                            placeholder={"Email"}
-                            className={"border border-gray-500 p-2 rounded-md"}
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                        />
+        <div className="flex justify-center items-center mt-24 bg-white text-black">
+            <form onSubmit={handleSubmit} className="bg-white w-96 shadow-lg rounded-lg p-8">
+                <h1 className="text-3xl font-bold text-black mb-6">Login</h1>
+                {error &&
+                    <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6" role="alert">
+                        <p className="font-bold">Error</p>
+                        <p>Invalid credentials</p>
                     </div>
-                </div>
-                <div className={"flex flex-col mb-4"}>
-                    <label htmlFor={"password"} className={"mb-2 font-semibold"}>Password</label>
+                }
+                <div className="mb-4">
+                    <label htmlFor="email" className="block text-sm font-semibold mb-2">Email:</label>
                     <input
-                        type="password"
-                        name={"password"}
-                        id={"password"}
-                        placeholder={"Password"}
-                        className={"border border-gray-500 p-2 rounded-md"}
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        type="email"
+                        id="email"
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
                     />
                 </div>
-                <button
-                    type={"submit"}
-                    className={"bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600"}
-                >
-                    Login
-                </button>
+                <div className="mb-6">
+                    <label htmlFor="password" className="block text-sm font-semibold mb-2">Password:</label>
+                    <input
+                        type="password"
+                        id="password"
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
+                </div>
+                <div className="flex items-center justify-between">
+                    <button
+                        className="bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                        type="submit"
+                    >
+                        Sign In
+                    </button>
+                </div>
             </form>
         </div>
     );

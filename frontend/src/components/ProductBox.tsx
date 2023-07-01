@@ -1,4 +1,6 @@
 import {Link} from "react-router-dom";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faShoppingBag} from "@fortawesome/free-solid-svg-icons";
 
 interface ProductSearchBoxProps {
     id: number;
@@ -11,27 +13,28 @@ interface ProductSearchBoxProps {
 }
 
 export default function ProductBox(props: ProductSearchBoxProps) {
+
     return (
-        <Link to={`/products${props.url} `}>
-            <div
-                className="lg:w-64 w-40 rounded-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
-
+        <Link to={`/products${props.url}`}>
+            <div className="flex flex-col overflow-hidden w-full sm:w-56 bg-white rounded-lg">
                 <img
-                    className="object-cover w-full h-48 rounded-t-lg"
+                    className="object-contain h-56"
                     src={`http://localhost:8000${props.thumbnail}`}
-                    alt=""/>
+                    alt=""
+                />
 
-                <div className="p-6">
-                    <h5
-                        className="mb-2 text-xl font-medium leading-tight text-neutral-800 dark:text-neutral-50">
-                        {props.name}
-                    </h5>
-                    <p className="mb-4 text-base text-neutral-600 dark:text-neutral-200 hidden sm:block">
+                <div className="flex flex-col justify-between p-6 h-full w-full">
+                    <h5 className="mb-2 text-xl font-medium">{props.name}</h5>
+                    <p className="h-16 overflow-hidden text-sm text-gray-500">
                         {props.description}
                     </p>
-                    <span className="text-xl font-semibold text-neutral-800 dark:text-neutral-50">
-                    {props.price}
-                </span>
+                    <span className="text-xl font-bold text-red-500">{props.price}</span>
+
+                    <div className="w-full flex justify-center mt-auto">
+                        <button className="w-full p-1 mt-4 text-white bg-black rounded hover:bg-gray-700">
+                            <FontAwesomeIcon icon={faShoppingBag}/>
+                        </button>
+                    </div>
                 </div>
             </div>
         </Link>

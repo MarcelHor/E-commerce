@@ -37,9 +37,9 @@ export default function LatestProducts() {
 
     return (
         <>
-            <section className="bg-gray-100 py-8 px-8">
+            <section className="bg-white lg:px-32 mb-16">
                 <div className="mx-auto">
-                    <h1 className="text-3xl font-bold text-center">
+                    <h1 className="text-center text-2xl font-medium mb-8 pb-4">
                         Latest Products
                     </h1>
                     <Carousel
@@ -58,7 +58,7 @@ export default function LatestProducts() {
                         removeArrowOnDeviceType={["tablet", "mobile"]}
                         dotListClass="custom-dot-list-style"
                         itemClass="carousel-item-padding-40-px"
-                        className="mt-8"
+                        className="p-2"
                     >
                         {latestProducts.map((product: any) => (
                             <ProductBox
