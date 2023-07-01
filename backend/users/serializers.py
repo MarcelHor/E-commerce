@@ -1,7 +1,6 @@
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-
 from .models import CustomUser
 
 
@@ -38,4 +37,9 @@ class TokenSerializer(TokenObtainPairSerializer):
         token['email'] = user.email
 
         return token
+
+
+
+
+
 

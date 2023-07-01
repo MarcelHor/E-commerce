@@ -16,16 +16,17 @@ class LatestProductsList(APIView):
 
 
 class ProductDetail(APIView):
-    def get_object(self, category_slug, product_slug):
+
+    def get(self, request, category_slug, product_slug, format=None):
         try:
-            return Product.objects.filter(category__slug=category_slug).get(slug=product_slug)
+            product = Product.objects.filter(category__slug=category_slug).get(slug=product_slug)
+            serializer = ProductSerializer(product)
+            return Response(serializer.data)
         except Product.DoesNotExist:
             raise Http404
 
-    def get(self, request, category_slug, product_slug, format=None):
-        product = self.get_object(category_slug, product_slug)
-        serializer = ProductSerializer(product)
-        return Response(serializer.data)
+
+
 
 
 class CategoryDetail(APIView):
@@ -48,7 +49,6 @@ class CategoriesList(APIView):
         return Response(serializer.data)
 
 
-# TODO: Maybe optimize this search query
 class ProductSearch(generics.ListAPIView):
     serializer_class = ProductSerializer
 
