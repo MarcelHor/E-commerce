@@ -15,10 +15,14 @@ class LatestProductsList(APIView):
 
 
 class ProductDetail(APIView):
-    def get(self, request, parent_category, child_category, product_slug):
+    def get(self, request, parent_category, child_category=None, product_slug=None):
         try:
-            product = Product.objects.filter(category__parent__slug=parent_category, category__slug=child_category).get(
-                slug=product_slug)
+            if child_category is not None and product_slug is not None:
+                product = Product.objects.filter(category__parent__slug=parent_category, category__slug=child_category).get(slug=product_slug)
+            elif product_slug is not None: # case where there is no child category but there is a product
+                product = Product.objects.filter(category__slug=parent_category).get(slug=product_slug)
+            else:
+                raise Http404
             serializer = ProductSerializer(product)
             return Response(serializer.data)
         except Product.DoesNotExist:

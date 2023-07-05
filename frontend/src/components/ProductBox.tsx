@@ -1,7 +1,6 @@
 import {Link} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faShoppingBag} from "@fortawesome/free-solid-svg-icons";
-import {useEffect} from "react";
 
 interface Product {
     id: number;
@@ -19,7 +18,6 @@ interface ProductBoxProps {
 }
 
 export default function ProductBox({product}: ProductBoxProps) {
-
     return (
         <Link to={`${product.get_absolute_url}`}>
             <div className="flex flex-col overflow-hidden w-full sm:w-56 bg-white rounded-lg">

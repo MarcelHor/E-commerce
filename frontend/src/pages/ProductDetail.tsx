@@ -25,11 +25,12 @@ export default function ProductDetail() {
     const fetchProductDetail = async () => {
         let baseUrl = "http://localhost:8000/api/v1/products";
         if (subcategory) {
-            baseUrl += `/${category}/${subcategory}/${slug}`;
+            baseUrl += `/${category}/${subcategory}/product/${slug}`;
         } else {
-            baseUrl += `/${category}/${slug}`;
+            baseUrl += `/${category}/product/${slug}`;
         }
         axios.get(baseUrl).then(res => {
+            console.log(res.data);
             setProduct(res.data);
         }).catch(err => {
             console.log(err);

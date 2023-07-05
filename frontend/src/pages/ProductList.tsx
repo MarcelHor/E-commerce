@@ -38,6 +38,10 @@ export default function ProductList() {
         return products;
     }
 
+    useEffect(() => {
+        document.title = `Products | ${name}`;
+    }, [name]);
+
     const { category, subcategory } = useParams();
     useEffect(() => {
         let apiUrl = `http://localhost:8000/api/v1/products/${category}`;

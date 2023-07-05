@@ -86,9 +86,9 @@ class Product(models.Model):
 
     def get_absolute_url(self):
         if self.category.parent:
-            return f'/products/{self.category.parent.slug}/{self.category.slug}/{self.slug}/'
+            return f'/products/{self.category.parent.slug}/{self.category.slug}/product/{self.slug}/'
         else:
-            return f'/products/{self.category.slug}/{self.slug}/'
+            return f'/products/{self.category.slug}/product/{self.slug}/'
 
     def get_image(self):
         if self.image:
