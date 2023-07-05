@@ -25,17 +25,18 @@ interface CartContextProps {
     getCartCount: () => number;
 }
 
-const CartContext = createContext<CartContextProps | undefined>(undefined);
+const CartProvider = createContext<CartContextProps | undefined>(undefined);
 
 export const useCart = () => {
-    const context = useContext(CartContext);
+    const context = useContext(CartProvider);
     if (!context) {
-        throw new Error('useCart must be used within a CartProvider')
+        throw new Error('useCart must be used within a CartContext')
     }
     return context;
 }
 
-export const CartProvider = ({children}: any) => {
+export const CartContext = ({children}: any) => {
+    const [showPopup, setShowPopup] = useState(false);
     const [cart, setCart] = useState<{ [key: string]: CartItem }>(
         JSON.parse(localStorage.getItem('cart') || '{}')
     );
@@ -47,7 +48,8 @@ export const CartProvider = ({children}: any) => {
         } else {
             newCart[product.id.toString()] = {product, quantity};
         }
-
+        setShowPopup(true);
+        setTimeout(() => setShowPopup(false), 3000); // Hide the popup after 3 seconds
         localStorage.setItem('cart', JSON.stringify(newCart));
         setCart(newCart);
     };
@@ -81,11 +83,27 @@ export const CartProvider = ({children}: any) => {
 
 
     return (
-        <CartContext.Provider value={{cart, addToCart, removeFromCart, clearCart, getCartTotal, getCartCount}}>
+        <CartProvider.Provider value={{cart, addToCart, removeFromCart, clearCart, getCartTotal, getCartCount}}>
             {children}
-        </CartContext.Provider>
+            {showPopup && (
+                <div
+                    style={{
+                        position: "fixed",
+                        bottom: "20px",
+                        right: "20px",
+                        backgroundColor: "lightgreen",
+                        padding: "10px",
+                        borderRadius: "5px",
+                        color: "white",
+                        fontWeight: "bold",
+                    }}
+                >
+                    Item added to cart!
+                </div>
+            )}
+        </CartProvider.Provider>
     )
 }
 
-export default CartProvider;
+export default CartContext;
 

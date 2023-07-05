@@ -4,14 +4,14 @@ import HomePage from "./pages/HomePage.tsx";
 import Header from "./components/Header.tsx";
 import ProductList from "./pages/ProductList.tsx";
 import CartCheckout from "./pages/CartCheckout.tsx";
-import CartProvider from "./context/CartProvider.tsx";
+import CartContext from "./context/CartContext.tsx";
 
 
 export default function App() {
     return (
         <>
             <Router>
-                <CartProvider>
+                <CartContext>
                     <Header/>
                     <Routes>
                         <Route path="/" element={<HomePage/>}/>
@@ -22,7 +22,7 @@ export default function App() {
                         <Route path="/cart" element={<CartCheckout/>}/>
                         <Route path="*" element={<h1>Not Found</h1>}/>
                     </Routes>
-                </CartProvider>
+                </CartContext>
             </Router>
         </>
     );

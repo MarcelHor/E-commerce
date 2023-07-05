@@ -2,7 +2,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faShoppingCart} from '@fortawesome/free-solid-svg-icons';
 import {Link} from "react-router-dom";
 import SearchBar from "./SearchBar.tsx";
-import {useCart} from "../context/CartProvider.tsx";
+import {useCart} from "../context/CartContext.tsx";
 
 export default function Header() {
     const {getCartCount} = useCart();

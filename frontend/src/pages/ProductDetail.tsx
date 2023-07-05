@@ -1,7 +1,7 @@
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
-import {useCart} from "../context/CartProvider.tsx";
+import {useCart} from "../context/CartContext.tsx";
 
 
 interface ProductDetailProps {
@@ -20,7 +20,6 @@ export default function ProductDetail() {
     const {category, subcategory, slug} = useParams();
     const [product, setProduct] = useState<ProductDetailProps | null>(null);
     const [quantity, setQuantity] = useState(1);
-    const [showPopup, setShowPopup] = useState(false);
 
     const fetchProductDetail = async () => {
         let baseUrl = "http://localhost:8000/api/v1/products";
@@ -40,8 +39,6 @@ export default function ProductDetail() {
 
     const handleAddToCart = (product: ProductDetailProps, quantity: number) => {
         addToCart(product, quantity);
-        setShowPopup(true);
-        setTimeout(() => setShowPopup(false), 3000); // Hide the popup after 3 seconds
     };
 
     useEffect(() => {
@@ -106,22 +103,6 @@ export default function ProductDetail() {
                     </div>
                 </div>
             </div>
-            {showPopup && (
-                <div
-                    style={{
-                        position: "fixed",
-                        bottom: "20px",
-                        right: "20px",
-                        backgroundColor: "lightgreen",
-                        padding: "10px",
-                        borderRadius: "5px",
-                        color: "white",
-                        fontWeight: "bold",
-                    }}
-                >
-                    Item added to cart!
-                </div>
-            )}
         </>
     );
 }
