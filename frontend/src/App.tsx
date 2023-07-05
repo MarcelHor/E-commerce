@@ -11,18 +11,18 @@ export default function App() {
     return (
         <>
             <Router>
-                    <CartProvider>
-                        <Header/>
-                        <Routes>
-                            <Route path="/" element={<HomePage/>}/>
-                            <Route path="/products/:category/:slug" element={<ProductDetail/>}/>
-                            <Route path="/products/:category" element={<ProductList/>}/>
-                            <Route path="/cart" element={<CartCheckout/>}/>
-                            <Route path="*" element={<h1>Not Found</h1>}/>
-                        </Routes>
-                    </CartProvider>
+                <CartProvider>
+                    <Header/>
+                    <Routes>
+                        <Route path="/" element={<HomePage/>}/>
+                        <Route path="/products/:category/:subcategory/:slug" element={<ProductDetail/>}/>
+                        <Route path="/products/:category/:subcategory" element={<ProductList/>}/>
+                        <Route path="/products/:category" element={<ProductList/>}/>
+                        <Route path="/cart" element={<CartCheckout/>}/>
+                        <Route path="*" element={<h1>Not Found</h1>}/>
+                    </Routes>
+                </CartProvider>
             </Router>
         </>
-
     );
 }

@@ -1,7 +1,17 @@
 import {useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
+import {useParams, Link} from "react-router-dom";
 import axios from "axios";
 import ProductBox from "../components/ProductBox.tsx";
+
+interface Category {
+    id: number;
+    name: string;
+    get_absolute_url: string;
+    children: Category[];
+    get_thumbnail: string;
+    get_image: string;
+    products: Product[];
+}
 
 interface Product {
     id: number;
@@ -15,85 +25,60 @@ interface Product {
 }
 
 export default function ProductList() {
+    const [categories, setCategories] = useState<Category[]>([]);
     const [products, setProducts] = useState<Product[]>([]);
-    const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
     const [name, setName] = useState<string>("");
-    const [stockFilter, setStockFilter] = useState<string>("");
-    const [sortFilter, setSortFilter] = useState<string>("");
-    const url = useParams();
 
+    const getProductsRecursive = (category: Category): Product[] => {
+        let products = category.products ?? [];
+        const children = category.children ?? [];
+        children.forEach(child => {
+            products = [...products, ...getProductsRecursive(child)];
+        });
+        return products;
+    }
+
+    const { category, subcategory } = useParams();
     useEffect(() => {
-        axios.get(`http://localhost:8000/api/v1/products/${url.category}/`)
+        let apiUrl = `http://localhost:8000/api/v1/products/${category}`;
+
+        if (subcategory) {
+            apiUrl += `/${subcategory}`;
+        }
+
+        axios.get(apiUrl)
             .then(res => {
-                setName(res.data.name);
-                setProducts(res.data.products);
-            })
-            .catch(err => {
-                console.log(err);
+                if (Array.isArray(res.data)) {
+                    setCategories(res.data[0].children);
+                    const allProducts = getProductsRecursive(res.data[0]);
+                    setProducts(allProducts);
+                    setName(res.data[0].name);
+                } else {
+                    setCategories(res.data.children);
+                    const allProducts = getProductsRecursive(res.data);
+                    setProducts(allProducts);
+                    setName(res.data.name);
+                }
             });
-    }, []);
-
-    useEffect(() => {
-        let updatedProducts = [...products];
-
-        switch (stockFilter) {
-            case "in_stock":
-                updatedProducts = updatedProducts.filter(product => product.in_stock);
-                break;
-            case "out_of_stock":
-                updatedProducts = updatedProducts.filter(product => !product.in_stock);
-                break;
-            default:
-                break;
-        }
-
-        switch (sortFilter) {
-            case "low":
-                updatedProducts.sort((a, b) => a.price - b.price);
-                break;
-            case "high":
-                updatedProducts.sort((a, b) => b.price - a.price);
-                break;
-            default:
-                break;
-        }
-
-        setFilteredProducts(updatedProducts);
-    }, [stockFilter, sortFilter, products]);
+    }, [category, subcategory]);
 
     return (
         <div className="flex flex-col items-center w-full">
             <h1 className="text-2xl font-semibold mt-8 mb-4">{name}</h1>
-            <div className="w-full px-32">
-                <h2 className="text-xl font-semibold">Filters</h2>
-                <div className="space-x-4">
-                    <span className="text-lg font-semibold mr-2">Stock</span>
-                    <select value={stockFilter} onChange={(e) => setStockFilter(e.target.value)} className="mt-4 bg-gray-100 p-1">
-                        <option value="">All</option>
-                        <option value="in_stock">In Stock</option>
-                        <option value="out_of_stock">Out of Stock</option>
-                    </select>
 
-                    <span className="text-lg font-semibold mr-2">Sort</span>
-                    <select className="mt-4 bg-gray-100 p-1" value={sortFilter} onChange={(e) => setSortFilter(e.target.value)}>
-                        <option value="">No Sort</option>
-                        <option value="low">Price: Low to High</option>
-                        <option value="high">Price: High to Low</option>
-                    </select>
+            {categories.map(category => (
+                <div key={category.id}>
+                    <Link to={category.get_absolute_url}>
+                        <h2>{category.name}</h2>
+                    </Link>
                 </div>
-            </div>
-            <div className="flex mt-8 justify-center space-x-4">
-                {filteredProducts.map(product => (
-                    <ProductBox key={product.id}
-                                id={product.id}
-                                name={product.name}
-                                price={product.price}
-                                image={product.get_image}
-                                thumbnail={product.get_thumbnail}
-                                description={product.description}
-                                url={product.get_absolute_url}/>
+            ))}
+            <div className="flex flex-wrap justify-center">
+                {products.map(product => (
+                    <ProductBox key={product.id} product={product}/>
                 ))}
             </div>
+
         </div>
     );
 }

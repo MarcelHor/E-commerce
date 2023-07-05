@@ -63,13 +63,7 @@ export default function LatestProducts() {
                         {latestProducts.map((product: any) => (
                             <ProductBox
                                 key={product.id}
-                                id={product.id}
-                                name={product.name}
-                                price={product.price}
-                                image={product.get_image}
-                                thumbnail={product.get_thumbnail}
-                                description={product.description}
-                                url={product.get_absolute_url}
+                                product={product}
                             />
                         ))}
                     </Carousel>

@@ -1,7 +1,7 @@
-import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import {useParams} from "react-router-dom";
+import {useEffect, useState} from "react";
 import axios from "axios";
-import { useCart } from "../context/CartProvider.tsx";
+import {useCart} from "../context/CartProvider.tsx";
 
 
 interface ProductDetailProps {
@@ -16,23 +16,26 @@ interface ProductDetailProps {
 }
 
 export default function ProductDetail() {
-    const { addToCart } = useCart();
-    const url = useParams();
+    const {addToCart} = useCart();
+    const {category, subcategory, slug} = useParams();
     const [product, setProduct] = useState<ProductDetailProps | null>(null);
     const [quantity, setQuantity] = useState(1);
     const [showPopup, setShowPopup] = useState(false);
 
     const fetchProductDetail = async () => {
-        try {
-            const response = await axios.get(
-                `http://localhost:8000/api/v1/products/${url.category}/${url.slug}/`
-            );
-            setProduct(response.data);
-            setQuantity(1);
-        } catch (error) {
-            console.log(error);
+        let baseUrl = "http://localhost:8000/api/v1/products";
+        if (subcategory) {
+            baseUrl += `/${category}/${subcategory}/${slug}`;
+        } else {
+            baseUrl += `/${category}/${slug}`;
         }
+        axios.get(baseUrl).then(res => {
+            setProduct(res.data);
+        }).catch(err => {
+            console.log(err);
+        });
     };
+
 
     const handleAddToCart = (product: ProductDetailProps, quantity: number) => {
         addToCart(product, quantity);
@@ -42,7 +45,7 @@ export default function ProductDetail() {
 
     useEffect(() => {
         fetchProductDetail();
-    }, [url]);
+    }, [category, subcategory, slug]);
 
     useEffect(() => {
         document.title = `Product | ${product?.name}`;
