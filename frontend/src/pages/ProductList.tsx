@@ -42,7 +42,7 @@ export default function ProductList() {
         document.title = `Products | ${name}`;
     }, [name]);
 
-    const { category, subcategory } = useParams();
+    const {category, subcategory} = useParams();
     useEffect(() => {
         let apiUrl = `http://localhost:8000/api/v1/products/${category}`;
 
@@ -53,6 +53,7 @@ export default function ProductList() {
         axios.get(apiUrl)
             .then(res => {
                 if (Array.isArray(res.data)) {
+                    console.log(res.data);
                     setCategories(res.data[0].children);
                     const allProducts = getProductsRecursive(res.data[0]);
                     setProducts(allProducts);
@@ -69,20 +70,28 @@ export default function ProductList() {
     return (
         <div className="flex flex-col items-center w-full">
             <h1 className="text-2xl font-semibold mt-8 mb-4">{name}</h1>
-
-            {categories.map(category => (
-                <div key={category.id}>
-                    <Link to={category.get_absolute_url}>
-                        <h2>{category.name}</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {categories.map((category) => (
+                    <Link
+                        key={category.id}
+                        to={`${category.get_absolute_url}`}
+                        className="flex flex-col items-center border border-gray-200 rounded-t-lg shadow-md hover:shadow-xl transition duration-300"
+                    >
+                        <img
+                            src={'http://localhost:8000' + category.get_thumbnail}
+                            alt={category.name}
+                            className="w-full rounded-t-lg"
+                        />
+                        <span className="text-lg font-medium py-2">{category.name}</span>
                     </Link>
-                </div>
-            ))}
-            <div className="flex flex-wrap justify-center">
+                ))}
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
                 {products.map(product => (
                     <ProductBox key={product.id} product={product}/>
                 ))}
             </div>
-
         </div>
     );
 }

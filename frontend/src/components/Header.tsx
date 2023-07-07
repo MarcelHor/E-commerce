@@ -9,23 +9,21 @@ export default function Header() {
 
     return (
         <>
-            <header className="px-8 lg:px-32 py-8">
-                <div className="flex flex-wrap lg:justify-between justify-center items-center space-x-2">
+            <header className="px-2 lg:px-32 py-8">
+                <div className="flex justify-between items-center space-x-2">
 
-                    <h1 className="text-2xl font-bold">
-                        <a href="/" className="text-black">E-Commerce</a>
+                    <h1 className="lg:text-2xl text-xl font-bold">
+                        <a href="/" className="text-black">Logo</a>
                     </h1>
 
                     <SearchBar/>
 
-                    <div className="flex items-center space-x-4">
-                        <Link className="text-white text-xl px-4 py-2 rounded-md flex items-center" to={"/cart"}>
-                            <FontAwesomeIcon icon={faShoppingCart} color={"black"} className="text-2xl"/>
+                        <Link className="flex items-center" to={"/cart"}>
+                            <FontAwesomeIcon icon={faShoppingCart} color={"black"} className="lg:text-2xl text-xl"/>
                             <span className="bg-red-500 text-white rounded-full px-2 py-1 text-xs font-bold ml-2">
-                {getCartCount()}
-              </span>
+                                {getCartCount()}
+                              </span>
                         </Link>
-                    </div>
                 </div>
             </header>
         </>

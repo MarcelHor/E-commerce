@@ -50,7 +50,7 @@ function SearchBar() {
                     <div className="mt-4 bg-white p-2 z-10 absolute w-full">
                         {products.map(product => (
                             <Link key={product.id} className="flex mb-4 bg-white items-center hover:bg-gray-200 p-2"
-                                  to={`/products${product.get_absolute_url}`}>
+                                  to={`${product.get_absolute_url}`}>
                                 <img
                                     src={`http://localhost:8000${product.get_thumbnail}`}
                                     alt={product.name}
