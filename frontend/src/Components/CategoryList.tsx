@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import axios from 'axios';
-import {Link} from "react-router-dom";
+import CategoryItem from "./CategoryItem.tsx";
 
 interface Category {
     id: number;
@@ -11,7 +11,7 @@ interface Category {
 }
 
 
-export default function CategoriesList() {
+export default function CategoryList() {
     const [categories, setCategories] = useState<Category[]>([]);
 
     useEffect(() => {
@@ -31,18 +31,7 @@ export default function CategoriesList() {
             <h2 className="text-2xl font-bold mb-4">Categories:</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {categories.map((category) => (
-                    <Link
-                        key={category.id}
-                        to={`${category.get_absolute_url}`}
-                        className="flex flex-col items-center border border-gray-200 rounded-t-lg shadow-md hover:shadow-xl transition duration-300"
-                    >
-                        <img
-                            src={'http://localhost:8000' + category.get_thumbnail}
-                            alt={category.name}
-                            className="w-full rounded-t-lg"
-                        />
-                        <span className="text-lg font-medium py-2">{category.name}</span>
-                    </Link>
+                    <CategoryItem category={category} key={category.id}/>
                 ))}
             </div>
         </div>

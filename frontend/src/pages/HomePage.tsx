@@ -1,8 +1,8 @@
-import LatestProducts from "../components/LatestProducts.tsx";
+import LatestProducts from "../Components/LatestProducts.tsx";
 import {useEffect} from "react";
-import CategoriesList from "../components/CategoriesList.tsx";
+import CategoryList from "../Components/CategoryList.tsx";
 import "react-multi-carousel/lib/styles.css";
-import HomepageCarousel from "../components/HomepageCarousel.tsx";
+import InfoCarousel from "../Components/InfoCarousel.tsx";
 
 export default function HomePage() {
     useEffect(() => {
@@ -11,8 +11,8 @@ export default function HomePage() {
 
     return (
         <>
-            <HomepageCarousel/>
-            <CategoriesList/>
+            <InfoCarousel/>
+            <CategoryList/>
             <LatestProducts/>
         </>
     );

@@ -1,7 +1,7 @@
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faShoppingCart} from '@fortawesome/free-solid-svg-icons';
 import {Link} from "react-router-dom";
-import SearchBar from "./SearchBar.tsx";
+import Searchbar from "./Searchbar.tsx";
 import {useCart} from "../context/CartContext.tsx";
 
 export default function Header() {
@@ -16,7 +16,7 @@ export default function Header() {
                         <a href="/" className="text-black">Logo</a>
                     </h1>
 
-                    <SearchBar/>
+                    <Searchbar/>
 
                         <Link className="flex items-center" to={"/cart"}>
                             <FontAwesomeIcon icon={faShoppingCart} color={"black"} className="lg:text-2xl text-xl"/>

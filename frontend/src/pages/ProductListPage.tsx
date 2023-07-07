@@ -1,7 +1,8 @@
 import {useEffect, useState} from "react";
-import {useParams, Link} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import axios from "axios";
-import ProductBox from "../components/ProductBox.tsx";
+import ProductCard from "../Components/ProductCard.tsx";
+import CategoryItem from "../Components/CategoryItem.tsx";
 
 interface Category {
     id: number;
@@ -24,7 +25,7 @@ interface Product {
     in_stock: boolean;
 }
 
-export default function ProductList() {
+export default function ProductListPage() {
     const [categories, setCategories] = useState<Category[]>([]);
     const [products, setProducts] = useState<Product[]>([]);
     const [name, setName] = useState<string>("");
@@ -72,24 +73,13 @@ export default function ProductList() {
             <h1 className="text-2xl font-semibold mt-8 mb-4">{name}</h1>
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {categories.map((category) => (
-                    <Link
-                        key={category.id}
-                        to={`${category.get_absolute_url}`}
-                        className="flex flex-col items-center border border-gray-200 rounded-t-lg shadow-md hover:shadow-xl transition duration-300"
-                    >
-                        <img
-                            src={'http://localhost:8000' + category.get_thumbnail}
-                            alt={category.name}
-                            className="w-full rounded-t-lg"
-                        />
-                        <span className="text-lg font-medium py-2">{category.name}</span>
-                    </Link>
+                    <CategoryItem category={category} key={category.id}/>
                 ))}
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
                 {products.map(product => (
-                    <ProductBox key={product.id} product={product}/>
+                    <ProductCard key={product.id} product={product}/>
                 ))}
             </div>
         </div>

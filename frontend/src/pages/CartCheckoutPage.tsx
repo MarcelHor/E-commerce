@@ -1,6 +1,6 @@
 import {useCart} from "../context/CartContext.tsx";
 
-export default function CartCheckout() {
+export default function CartCheckoutPage() {
 
     const {cart, removeFromCart, addToCart, getCartTotal, getCartCount} = useCart();
 

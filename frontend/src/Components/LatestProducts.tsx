@@ -1,6 +1,6 @@
 import axios from "axios";
 import {useEffect, useState} from "react";
-import ProductBox from "./ProductBox.tsx";
+import ProductCard from "./ProductCard.tsx";
 import 'react-multi-carousel/lib/styles.css';
 import Carousel from 'react-multi-carousel';
 
@@ -61,7 +61,7 @@ export default function LatestProducts() {
                         className="p-2"
                     >
                         {latestProducts.map((product: any) => (
-                            <ProductBox
+                            <ProductCard
                                 key={product.id}
                                 product={product}
                             />

@@ -18,7 +18,7 @@ interface ProductBoxProps {
     product: Product;
 }
 
-export default function ProductBox({product}: ProductBoxProps) {
+export default function ProductCard({product}: ProductBoxProps) {
     const {addToCart} = useCart();
 
     const handleAddToCart = () => {

@@ -1,7 +1,6 @@
 import Carousel from "react-multi-carousel";
 
-
-const HomepageCarousel = () => {
+const InfoCarousel = () => {
     const slides = [
         {
             id: 1,
@@ -65,4 +64,4 @@ const HomepageCarousel = () => {
     )
 }
 
-export default HomepageCarousel;
+export default InfoCarousel;

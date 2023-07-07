@@ -14,7 +14,7 @@ class LatestProductsList(APIView):
         return Response(serializer.data)
 
 
-class ProductDetail(APIView):
+class ProductDetailPage(APIView):
     def get(self, request, parent_category, child_category=None, product_slug=None):
         try:
             if child_category is not None and product_slug is not None:
@@ -43,7 +43,7 @@ class CategoryDetail(APIView):
             raise Http404
 
 
-class CategoriesList(APIView):
+class CategoryList(APIView):
     def get(self, request):
         root_categories = Category.objects.filter(parent=None)
         serializer = CategoriesListSerializer(root_categories, many=True)

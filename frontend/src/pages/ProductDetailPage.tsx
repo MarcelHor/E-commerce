@@ -15,7 +15,7 @@ interface ProductDetailProps {
     in_stock: boolean;
 }
 
-export default function ProductDetail() {
+export default function ProductDetailPage() {
     const {addToCart} = useCart();
     const {category, subcategory, slug} = useParams();
     const [product, setProduct] = useState<ProductDetailProps | null>(null);

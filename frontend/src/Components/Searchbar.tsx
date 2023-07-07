@@ -13,7 +13,7 @@ interface Product {
     in_stock: boolean;
 }
 
-function SearchBar() {
+function Searchbar() {
     const [searchTerm, setSearchTerm] = useState('');
     const [products, setProducts] = useState<Product[]>([]);
     const location = useLocation();
@@ -70,4 +70,4 @@ function SearchBar() {
     );
 }
 
-export default SearchBar;
+export default Searchbar;
