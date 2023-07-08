@@ -8,7 +8,7 @@ const InfoCarousel = () => {
                 "https://cdn.pixabay.com/photo/2020/06/06/01/21/nvidia-5264921_1280.jpg",
             text: "New graphic cards from Nvidia",
         },
-        {
+                {
             id: 2,
             image:
                 "https://cdn.pixabay.com/photo/2015/08/11/20/52/motherboard-885177_1280.jpg",

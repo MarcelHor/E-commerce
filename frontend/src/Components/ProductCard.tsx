@@ -45,7 +45,7 @@ export default function ProductCard({product}: ProductBoxProps) {
                 </Link>
 
                 <div className="w-full flex justify-center mt-auto">
-                    <button className="w-full p-1 mt-4 text-white bg-black rounded-full hover:bg-gray-700" onClick={handleAddToCart}>
+                    <button className="w-full p-1 mt-4 text-white bg-neutral-800 rounded-lg hover:bg-neutral-600" onClick={handleAddToCart}>
                         <FontAwesomeIcon icon={faShoppingBag}/>
                     </button>
                 </div>

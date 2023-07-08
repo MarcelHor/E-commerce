@@ -27,8 +27,13 @@ interface Product {
 
 export default function ProductListPage() {
     const [categories, setCategories] = useState<Category[]>([]);
-    const [products, setProducts] = useState<Product[]>([]);
+    const [allProducts, setAllProducts] = useState<Product[]>([]);
+    const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
     const [name, setName] = useState<string>("");
+    const [sortType, setSortType] = useState<string>("");
+    const [inStockOnly, setInStockOnly] = useState<boolean>(false);
+    const [priceRange, setPriceRange] = useState<{min: number, max: number}>({min: 0, max: Infinity});
+
 
     const getProductsRecursive = (category: Category): Product[] => {
         let products = category.products ?? [];
@@ -54,34 +59,78 @@ export default function ProductListPage() {
         axios.get(apiUrl)
             .then(res => {
                 if (Array.isArray(res.data)) {
-                    console.log(res.data);
                     setCategories(res.data[0].children);
                     const allProducts = getProductsRecursive(res.data[0]);
-                    setProducts(allProducts);
+                    setAllProducts(allProducts);
                     setName(res.data[0].name);
                 } else {
                     setCategories(res.data.children);
                     const allProducts = getProductsRecursive(res.data);
-                    setProducts(allProducts);
+                    setAllProducts(allProducts);
                     setName(res.data.name);
                 }
             });
     }, [category, subcategory]);
 
-    return (
-        <div className="flex flex-col items-center w-full">
-            <h1 className="text-2xl font-semibold mt-8 mb-4">{name}</h1>
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {categories.map((category) => (
-                    <CategoryItem category={category} key={category.id}/>
-                ))}
-            </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
-                {products.map(product => (
-                    <ProductCard key={product.id} product={product}/>
-                ))}
+    useEffect(() => {
+        let productsToFilter = [...allProducts];
+
+        if (inStockOnly) {
+            productsToFilter = productsToFilter.filter(p => p.in_stock);
+        }
+
+        productsToFilter = productsToFilter.filter(p => p.price >= priceRange.min && p.price <= priceRange.max);
+
+        switch(sortType) {
+            case 'price-high':
+                productsToFilter.sort((a, b) => b.price - a.price);
+                break;
+            case 'price-low':
+                productsToFilter.sort((a, b) => a.price - b.price);
+                break;
+            case 'name':
+                productsToFilter.sort((a, b) => a.name.localeCompare(b.name));
+                break;
+            default:
+                break;
+        }
+
+        setFilteredProducts(productsToFilter);
+    }, [sortType, inStockOnly, priceRange]);
+
+    return (
+        <>
+            <div className="flex flex-col items-center w-full space-y-8 my-8">
+                <h1 className="text-2xl font-semibold">{name}</h1>
+                <div className="flex items-center space-x-4">
+                    <p className="text-sm text-gray-500">Sort by</p>
+                    <select onChange={(e) => setSortType(e.target.value)}>
+                        <option value="name">Name</option>
+                        <option value="price-high">Price (High to Low)</option>
+                        <option value="price-low">Price (Low to High)</option>
+                    </select>
+                    <p className="text-sm text-gray-500">In Stock Only</p>
+                    <input type="checkbox" onChange={(e) => setInStockOnly(e.target.checked)} />
+                    <p className="text-sm text-gray-500">Price Range</p>
+                    <form>
+                    <input type="number" placeholder="Min Price" onChange={(e) => setPriceRange({...priceRange, min: Number(e.target.value)})} />
+                    <input type="number" placeholder="Max Price" onChange={(e) => setPriceRange({...priceRange, max: Number(e.target.value)})} />
+                    </form>
+                    <p className="text-sm text-gray-500">Showing {filteredProducts.length} of {allProducts.length} products</p>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    {categories.map((category) => (
+                        <CategoryItem category={category} key={category.id}/>
+                    ))}
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-14">
+                    {filteredProducts.map(product => (
+                        <ProductCard key={product.id} product={product}/>
+                    ))}
+                </div>
             </div>
-        </div>
+        </>
     );
 }

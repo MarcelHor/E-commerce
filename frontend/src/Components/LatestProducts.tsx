@@ -37,10 +37,10 @@ export default function LatestProducts() {
 
     return (
         <>
-            <section className="bg-white lg:px-32 mb-16">
+            <section className="bg-white lg:px-32 mb-16 py-8">
                 <div className="mx-auto">
-                    <h1 className="text-center text-2xl font-medium mb-8 pb-4">
-                        Latest Products
+                    <h1 className="text-center text-2xl font-medium mb-8">
+                        Latest Products:
                     </h1>
                     <Carousel
                         swipeable={true}
