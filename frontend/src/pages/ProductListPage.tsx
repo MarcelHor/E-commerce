@@ -137,7 +137,7 @@ export default function ProductListPage() {
                 <h1 className="text-2xl font-semibold">{name}</h1>
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full space-y-2 sm:space-y-0 sm:space-x-4 px-4 sm:px-8 md:px-16 lg:px-32">
                     <div className="flex items-center space-x-2 sm:space-x-4">
-                        <p className="hidden sm:block text-sm text-gray-500">Sort by</p>
+                        <p className="text-sm text-gray-500">Sort by:</p>
                         <select
                             onChange={(e) => setSortType(e.target.value)}
                             className="border border-gray-300 rounded px-2 py-1"
@@ -149,7 +149,7 @@ export default function ProductListPage() {
                         </select>
                     </div>
                     <div className="flex items-center space-x-4">
-                        <p className="text-sm text-gray-500">In Stock Only</p>
+                        <p className="text-sm text-gray-500">In Stock Only:</p>
                         <input
                             type="checkbox"
                             checked={inStockOnly}
@@ -159,20 +159,20 @@ export default function ProductListPage() {
                     </div>
                     <form onSubmit={handlePriceRangeUpdate}>
                         <div className="flex items-center space-x-4">
-                            <p className="text-sm text-gray-500">Price Range</p>
+                            <p className="text-sm text-gray-500">Price Range:</p>
                             <input
                                 type="number"
                                 placeholder="Min Price"
                                 name="min"
                                 ref={minPriceRef}
-                                className="border border-gray-300 rounded px-2 py-1"
+                                className="border border-gray-300 rounded w-20 lg:w-32 px-2 py-1"
                             />
                             <input
                                 type="number"
                                 placeholder="Max Price"
                                 name="max"
                                 ref={maxPriceRef}
-                                className="border border-gray-300 rounded px-2 py-1"
+                                className="border border-gray-300 rounded w-20 lg:w-32 px-2 py-1"
                             />
                             <button
                                 type="submit"
@@ -189,7 +189,7 @@ export default function ProductListPage() {
                 </div>
 
 
-                <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 w-full px-32">
+                <div className="grid grid-cols-1 md:grid-cols-3  lg:grid-cols-3 xl:grid-cols-4 gap-4 justify-items-center lg:justify-items-start">
                     {categories.map((category) => (
                         <CategoryItem category={category} key={category.id}/>
                     ))}
