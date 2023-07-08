@@ -38,7 +38,7 @@ const InfoCarousel = () => {
     };
 
     return (
-        <div className="px-2 lg:px-32 py-8">
+        <div className="lg:px-32 py-8 px-0">
             <Carousel
                 responsive={carouselResponsiveConfig}
                 showDots={true}

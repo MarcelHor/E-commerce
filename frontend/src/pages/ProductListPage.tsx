@@ -1,8 +1,10 @@
-import {useEffect, useState} from "react";
+import {useEffect, useState, useRef} from "react";
 import {useParams} from "react-router-dom";
 import axios from "axios";
 import ProductCard from "../Components/ProductCard.tsx";
 import CategoryItem from "../Components/CategoryItem.tsx";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faFilter} from "@fortawesome/free-solid-svg-icons";
 
 interface Category {
     id: number;
@@ -32,23 +34,35 @@ export default function ProductListPage() {
     const [name, setName] = useState<string>("");
     const [sortType, setSortType] = useState<string>("");
     const [inStockOnly, setInStockOnly] = useState<boolean>(false);
-    const [priceRange, setPriceRange] = useState<{min: number, max: number}>({min: 0, max: Infinity});
+    const [minPrice, setMinPrice] = useState<number>(0);
+    const [maxPrice, setMaxPrice] = useState<number>(Infinity);
 
+    const minPriceRef = useRef<HTMLInputElement>(null);
+    const maxPriceRef = useRef<HTMLInputElement>(null);
+
+    const {category, subcategory} = useParams();
+
+    const handlePriceRangeUpdate = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const minPrice = parseInt(minPriceRef.current?.value ?? "0");
+        const maxPrice = parseInt(maxPriceRef.current?.value ?? "0");
+        setMinPrice(minPrice);
+        setMaxPrice(maxPrice);
+    };
 
     const getProductsRecursive = (category: Category): Product[] => {
         let products = category.products ?? [];
         const children = category.children ?? [];
-        children.forEach(child => {
+        children.forEach((child) => {
             products = [...products, ...getProductsRecursive(child)];
         });
         return products;
-    }
+    };
 
     useEffect(() => {
         document.title = `Products | ${name}`;
     }, [name]);
 
-    const {category, subcategory} = useParams();
     useEffect(() => {
         let apiUrl = `http://localhost:8000/api/v1/products/${category}`;
 
@@ -56,77 +70,133 @@ export default function ProductListPage() {
             apiUrl += `/${subcategory}`;
         }
 
-        axios.get(apiUrl)
-            .then(res => {
-                if (Array.isArray(res.data)) {
-                    setCategories(res.data[0].children);
-                    const allProducts = getProductsRecursive(res.data[0]);
-                    setAllProducts(allProducts);
-                    setName(res.data[0].name);
-                } else {
-                    setCategories(res.data.children);
-                    const allProducts = getProductsRecursive(res.data);
-                    setAllProducts(allProducts);
-                    setName(res.data.name);
-                }
-            });
+        axios.get(apiUrl).then((res) => {
+            if (Array.isArray(res.data)) {
+                setCategories(res.data[0].children);
+                const allProducts = getProductsRecursive(res.data[0]);
+                setAllProducts(allProducts);
+                setName(res.data[0].name);
+            } else {
+                setCategories(res.data.children);
+                const allProducts = getProductsRecursive(res.data);
+                setAllProducts(allProducts);
+                setName(res.data.name);
+            }
+        });
     }, [category, subcategory]);
 
-
+    // Filter products based on filters
     useEffect(() => {
         let productsToFilter = [...allProducts];
 
         if (inStockOnly) {
-            productsToFilter = productsToFilter.filter(p => p.in_stock);
+            productsToFilter = productsToFilter.filter((p) => p.in_stock);
         }
 
-        productsToFilter = productsToFilter.filter(p => p.price >= priceRange.min && p.price <= priceRange.max);
+        if (minPrice > 0) {
+            productsToFilter = productsToFilter.filter((p) => p.price >= minPrice);
+        }
 
-        switch(sortType) {
-            case 'price-high':
+        if (maxPrice < Infinity) {
+            productsToFilter = productsToFilter.filter((p) => p.price <= maxPrice);
+        }
+
+        switch (sortType) {
+            case "price-high":
                 productsToFilter.sort((a, b) => b.price - a.price);
                 break;
-            case 'price-low':
+            case "price-low":
                 productsToFilter.sort((a, b) => a.price - b.price);
                 break;
-            case 'name':
+            case "name":
                 productsToFilter.sort((a, b) => a.name.localeCompare(b.name));
+                break;
+            case "none":
+                setFilteredProducts(allProducts);
                 break;
             default:
                 break;
         }
 
         setFilteredProducts(productsToFilter);
-    }, [sortType, inStockOnly, priceRange]);
+    }, [sortType, inStockOnly, minPrice, maxPrice, allProducts]);
+
+    // Reset filters when category or subcategory changes
+    useEffect(() => {
+        if (minPriceRef.current) minPriceRef.current.value = "";
+        if (maxPriceRef.current) maxPriceRef.current.value = "";
+        setMinPrice(0);
+        setMaxPrice(Infinity);
+        setInStockOnly(false);
+        setSortType("");
+    }, [category, subcategory]);
 
     return (
         <>
-            <div className="flex flex-col items-center w-full space-y-8 my-8">
+            <div className="flex flex-col items-center w-full space-y-10 my-8">
                 <h1 className="text-2xl font-semibold">{name}</h1>
-                <div className="flex items-center space-x-4">
-                    <p className="text-sm text-gray-500">Sort by</p>
-                    <select onChange={(e) => setSortType(e.target.value)}>
-                        <option value="name">Name</option>
-                        <option value="price-high">Price (High to Low)</option>
-                        <option value="price-low">Price (Low to High)</option>
-                    </select>
-                    <p className="text-sm text-gray-500">In Stock Only</p>
-                    <input type="checkbox" onChange={(e) => setInStockOnly(e.target.checked)} />
-                    <p className="text-sm text-gray-500">Price Range</p>
-                    <form>
-                    <input type="number" placeholder="Min Price" onChange={(e) => setPriceRange({...priceRange, min: Number(e.target.value)})} />
-                    <input type="number" placeholder="Max Price" onChange={(e) => setPriceRange({...priceRange, max: Number(e.target.value)})} />
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full space-y-2 sm:space-y-0 sm:space-x-4 px-4 sm:px-8 md:px-16 lg:px-32">
+                    <div className="flex items-center space-x-2 sm:space-x-4">
+                        <p className="hidden sm:block text-sm text-gray-500">Sort by</p>
+                        <select
+                            onChange={(e) => setSortType(e.target.value)}
+                            className="border border-gray-300 rounded px-2 py-1"
+                        >
+                            <option value="">None</option>
+                            <option value="name">Name</option>
+                            <option value="price-high">Price (High to Low)</option>
+                            <option value="price-low">Price (Low to High)</option>
+                        </select>
+                    </div>
+                    <div className="flex items-center space-x-4">
+                        <p className="text-sm text-gray-500">In Stock Only</p>
+                        <input
+                            type="checkbox"
+                            checked={inStockOnly}
+                            onChange={(e) => setInStockOnly(e.target.checked)}
+                            className="border border-gray-300 rounded"
+                        />
+                    </div>
+                    <form onSubmit={handlePriceRangeUpdate}>
+                        <div className="flex items-center space-x-4">
+                            <p className="text-sm text-gray-500">Price Range</p>
+                            <input
+                                type="number"
+                                placeholder="Min Price"
+                                name="min"
+                                ref={minPriceRef}
+                                className="border border-gray-300 rounded px-2 py-1"
+                            />
+                            <input
+                                type="number"
+                                placeholder="Max Price"
+                                name="max"
+                                ref={maxPriceRef}
+                                className="border border-gray-300 rounded px-2 py-1"
+                            />
+                            <button
+                                type="submit"
+                                className="bg-neutral-800 text-white border border-gray-300 rounded px-2 py-1"
+                            >
+                                <FontAwesomeIcon icon={faFilter} className="mr-2"/>
+                                Update
+                            </button>
+                        </div>
                     </form>
-                    <p className="text-sm text-gray-500">Showing {filteredProducts.length} of {allProducts.length} products</p>
+                    <p className="text-sm text-gray-500">
+                        Showing {filteredProducts.length} of {allProducts.length} products
+                    </p>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+
+
+                <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 w-full px-32">
                     {categories.map((category) => (
                         <CategoryItem category={category} key={category.id}/>
                     ))}
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-14">
-                    {filteredProducts.map(product => (
+                <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-14 w-full px-32">
+                    {filteredProducts.map((product) => (
                         <ProductCard key={product.id} product={product}/>
                     ))}
                 </div>
