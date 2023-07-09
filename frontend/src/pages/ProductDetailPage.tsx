@@ -94,7 +94,7 @@ export default function ProductDetailPage() {
                         className="border-neutral-500 border w-8 h-8 "
                         onClick={() => setQuantity(quantity + 1)}
                     >
-                        <FontAwesomeIcon icon={faPlus} color={"#313131"} />o
+                        <FontAwesomeIcon icon={faPlus} color={"#313131"} />
                     </button>
                 </div>
                 <div className="flex space-x-2 py-2">

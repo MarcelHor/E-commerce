@@ -133,10 +133,9 @@ export default function ProductListPage() {
 
     return (
         <>
-            <div className="flex flex-col items-center w-full space-y-10 my-8">
-                <h1 className="text-2xl font-semibold">{name}</h1>
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full space-y-2 sm:space-y-0 sm:space-x-4 px-4 sm:px-8 md:px-16 lg:px-32">
-                    <div className="flex items-center space-x-2 sm:space-x-4">
+            <div className="md:flex">
+                <div className="w-full md:w-64 flex flex-col border-r border-gray-200 p-4">
+                    <div className="flex items-center space-x-2 sm:space-x-4 mb-4">
                         <p className="text-sm text-gray-500">Sort by:</p>
                         <select
                             onChange={(e) => setSortType(e.target.value)}
@@ -148,7 +147,7 @@ export default function ProductListPage() {
                             <option value="price-low">Price (Low to High)</option>
                         </select>
                     </div>
-                    <div className="flex items-center space-x-4">
+                    <div className="flex items-center space-x-4 mb-4">
                         <p className="text-sm text-gray-500">In Stock Only:</p>
                         <input
                             type="checkbox"
@@ -158,21 +157,21 @@ export default function ProductListPage() {
                         />
                     </div>
                     <form onSubmit={handlePriceRangeUpdate}>
-                        <div className="flex items-center space-x-4">
+                        <div className="flex flex-col space-y-2">
                             <p className="text-sm text-gray-500">Price Range:</p>
                             <input
                                 type="number"
                                 placeholder="Min Price"
                                 name="min"
                                 ref={minPriceRef}
-                                className="border border-gray-300 rounded w-20 lg:w-32 px-2 py-1"
+                                className="border border-gray-300 rounded px-2 py-1"
                             />
                             <input
                                 type="number"
                                 placeholder="Max Price"
                                 name="max"
                                 ref={maxPriceRef}
-                                className="border border-gray-300 rounded w-20 lg:w-32 px-2 py-1"
+                                className="border border-gray-300 rounded px-2 py-1"
                             />
                             <button
                                 type="submit"
@@ -183,22 +182,23 @@ export default function ProductListPage() {
                             </button>
                         </div>
                     </form>
-                    <p className="text-sm text-gray-500">
-                        Showing {filteredProducts.length} of {allProducts.length} products
-                    </p>
                 </div>
 
+                <div className="flex-1 flex flex-col items-center space-y-10 my-8 px-4">
+                    <h1 className="text-2xl font-semibold">{name}</h1>
 
-                <div className="grid grid-cols-1 md:grid-cols-3  lg:grid-cols-3 xl:grid-cols-4 gap-4 justify-items-center lg:justify-items-start">
-                    {categories.map((category) => (
-                        <CategoryItem category={category} key={category.id}/>
-                    ))}
-                </div>
+                    <div className="grid grid-cols-1 gap-2 md:gap-1 lg:gap-1 xl:gap-1 lg:grid-cols-3 xl:grid-cols-4 justify-items-center lg:justify-items-start w-full">
+                        {categories.map((category) => (
+                            <CategoryItem category={category} key={category.id}/>
+                        ))}
+                    </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-14 w-full px-32">
-                    {filteredProducts.map((product) => (
-                        <ProductCard key={product.id} product={product}/>
-                    ))}
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-14 w-full">
+                        {filteredProducts.map((product) => (
+                            <ProductCard key={product.id} product={product}/>
+                        ))}
+                    </div>
                 </div>
             </div>
         </>
