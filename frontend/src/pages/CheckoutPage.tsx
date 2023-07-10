@@ -5,6 +5,15 @@ const CheckoutPage = () => {
     const {cart, getCartTotal, getCartCount} = useCart();
     const [isCompany, setIsCompany] = useState(false);
     const [isSameAddress, setIsSameAddress] = useState(false);
+    const [deliveryOption, setDeliveryOption] = useState("standard");
+
+
+
+    const calculateTotalPrice = () => {
+        const baseTotal = getCartTotal();
+        return deliveryOption === "standard" ? baseTotal + 5 : baseTotal;
+    }
+
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -17,7 +26,7 @@ const CheckoutPage = () => {
                 <h2 className="text-2xl font-bold mb-6">Checkout</h2>
 
                 <h3 className="text-xl font-bold mb-4">Billing Details</h3>
-                <form onSubmit={handleSubmit} className="mb-8">
+                <form onSubmit={handleSubmit}>
                     <div className="flex space-x-6 w-full">
                         <div className="mb-4 w-full">
                             <label className="block text-gray-700">Last Name <span className={"text-red-500"}>*</span></label>
@@ -129,12 +138,28 @@ const CheckoutPage = () => {
                     </div>
 
                     <div className="border-t pt-6">
-                        <h2 className="text-xl font-bold mb-4">Your Order</h2>
-
+                        <h2 className="text-xl font-bold mb-4">Payment</h2>
                         <div className="mb-4">
-                            <p>Total Items: {getCartCount()}</p>
-                            <p>Total Price: {getCartTotal()}</p>
+                            <input type="radio" className="mr-2" name="payment" value="bank-transfer" required/> Pay on delivery
                         </div>
+                        <div className="mb-4">
+                            <input type="radio" className="mr-2" name="payment" value="paypal" required disabled={true}/> Credit card
+                            <div className={"text-rose-600 text-sm"}>Credit card payments are not available at the moment.</div>
+                        </div>
+                    </div>
+
+                    <div className="border-t pt-6">
+                        <h2 className="text-xl font-bold mb-4">Delivery Options</h2>
+                        <div className="mb-4">
+                            <input type="radio" className="mr-2" name="delivery" value="standard" checked={deliveryOption === "standard"} onChange={() => setDeliveryOption("standard")}/> Standard Shipping - Extra 5 USD
+                        </div>
+                        <div className="mb-4">
+                            <input type="radio" className="mr-2" name="delivery" value="pickup" checked={deliveryOption === "pickup"} onChange={() => setDeliveryOption("pickup")}/> Pickup - No Extra Charge
+                        </div>
+                    </div>
+
+                    <div className="border-t pt-6">
+                        <h2 className="text-xl font-bold mb-4">Your Order</h2>
 
                         <table className="table-auto w-full mb-4">
                             <thead>
@@ -149,44 +174,23 @@ const CheckoutPage = () => {
                                 <tr key={key}>
                                     <td className="px-4 py-2 border text-sm">{cart[key].product.name}</td>
                                     <td className="px-4 py-2 border text-sm">{cart[key].quantity}</td>
-                                    <td className="px-4 py-2 border text-sm">{cart[key].product.price}</td>
+                                    <td className="px-4 py-2 border text-sm">{cart[key].product.price} USD</td>
                                 </tr>
                             ))}
+                            {deliveryOption === "standard" && (
+                                <tr>
+                                    <td className="px-4 py-2 border text-sm">Shipping Fee</td>
+                                    <td className="px-4 py-2 border text-sm">1</td>
+                                    <td className="px-4 py-2 border text-sm">5 USD</td>
+                                </tr>
+                            )}
                             </tbody>
                         </table>
-
                         <div className="mb-4">
-                            <p>Total Cost: {getCartTotal()} (Including tax)</p>
+                            <p>Total Items: {getCartCount()}</p>
+                            <p className={"font-bold"}>Total Price: {calculateTotalPrice()} USD</p>
                         </div>
                     </div>
-
-                    <div className="border-t pt-6">
-                        <h2 className="text-xl font-bold mb-4">Payment</h2>
-                        <div className="mb-4">
-                            <input type="radio" className="mr-2" name="payment" value="bank-transfer" required/> Bank
-                            Transfer
-                        </div>
-                        <div className="mb-4">
-                            <input type="radio" className="mr-2" name="payment" value="cash-on-delivery" required/> Cash
-                            on Delivery
-                        </div>
-                        <div className="mb-4">
-                            <input type="radio" className="mr-2" name="payment" value="paypal" required/> PayPal
-                        </div>
-                    </div>
-
-                    <div className="border-t pt-6">
-                        <h2 className="text-xl font-bold mb-4">Shipping</h2>
-                        <div className="mb-4">
-                            <input type="radio" className="mr-2" namfe="shipping" value="standard" required/> Standard
-                            Shipping
-                        </div>
-                        <div className="mb-4">
-                            <input type="radio" className="mr-2" name="shipping" value="express" required/> Express
-                            Shipping
-                        </div>
-                    </div>
-
                     <div className="border-t pt-6">
                         <h2 className="text-xl font-bold mb-4">Terms & Conditions</h2>
                         <div className="mb-4">
