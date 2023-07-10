@@ -2,9 +2,14 @@ import {useCart} from "../context/CartContext.tsx";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faMinus, faPlus, faShoppingCart} from "@fortawesome/free-solid-svg-icons";
 import {Link} from "react-router-dom";
+import {useEffect} from "react";
 
 export default function CartPage() {
     const {cart, removeFromCart, addToCart, getCartTotal, getCartCount} = useCart();
+
+    useEffect(() => {
+        document.title = "Cart | E-Commerce";
+    } , []);
 
     return (
         <>

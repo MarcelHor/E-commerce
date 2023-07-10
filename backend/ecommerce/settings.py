@@ -16,6 +16,8 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 from datetime import timedelta
+import os
+from dotenv import load_dotenv
 
 
 # Quick-start development settings - unsuitable for production
@@ -63,11 +65,13 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'ecommerce.urls'
 
-DEBUG = True
+load_dotenv()
+
+
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'marcel.stinbank@gmail.com'
-EMAIL_HOST_PASSWORD = 'bemmwdxzfyzuyasl'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 

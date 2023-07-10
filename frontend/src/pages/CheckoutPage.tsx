@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { useCart } from "../context/CartContext.tsx";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
@@ -40,6 +40,10 @@ const CheckoutPage = () => {
                 console.log(error);
             });
     };
+
+    useEffect(() => {
+        document.title = "Checkout | E-Commerce";
+    }, []);
 
     return (
         <div className="flex flex-col items-center justify-center p-6">

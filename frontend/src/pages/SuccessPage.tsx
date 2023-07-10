@@ -1,9 +1,14 @@
 import {Link} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCheckCircle} from "@fortawesome/free-solid-svg-icons";
+import {useEffect} from "react";
 
 
 const SuccessPage = () => {
+    useEffect(() => {
+        document.title = "E-commerce | Success";
+    }, []);
+
     return (
         <div className="flex flex-col items-center justify-center p-6">
             <div className="flex flex-col items-center text-center bg-white shadow-md w-full md:w-4/5 lg:w-3/5 rounded-lg p-8">
