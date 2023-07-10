@@ -7,6 +7,7 @@ import CartPage from "./pages/CartPage.tsx";
 import CartContext from "./context/CartContext.tsx";
 import Footer from "./Components/Footer.tsx";
 import CheckoutPage from "./pages/CheckoutPage.tsx";
+import SuccessPage from "./pages/SuccessPage.tsx";
 
 
 export default function App() {
@@ -25,6 +26,7 @@ export default function App() {
                                 <Route path="/products/:category" element={<ProductListPage/>}/>
                                 <Route path="/cart" element={<CartPage/>}/>
                                 <Route path="/checkout" element={<CheckoutPage/>}/>
+                                <Route path="/success" element={<SuccessPage/>}/>
                                 <Route path="*" element={<h1>Not Found</h1>}/>
                             </Routes>
                         </main>
