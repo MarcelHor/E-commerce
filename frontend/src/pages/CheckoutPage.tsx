@@ -5,7 +5,7 @@ import axios from "axios";
 import {useNavigate} from "react-router-dom";
 
 const CheckoutPage = () => {
-    const { cart, getCartTotal, getCartCount } = useCart();
+    const { cart, getCartTotal, getCartCount, clearCart } = useCart();
     const [isCompany, setIsCompany] = useState(false);
     const [isSameAddress, setIsSameAddress] = useState(false);
     const [deliveryOption, setDeliveryOption] = useState("standard");
@@ -34,6 +34,7 @@ const CheckoutPage = () => {
         axios.post("http://localhost:8000/api/v1/orders/", data)
             .then(response => {
                 if(response.status === 201)
+                    clearCart();
                     navigate("/success");
             }).catch(error => {
                 console.log(error);

@@ -61,3 +61,8 @@ class CategoriesListSerializer(serializers.ModelSerializer):
         """
         serializer = self.__class__(instance.children.all(), many=True)
         return serializer.data
+
+
+
+
+
