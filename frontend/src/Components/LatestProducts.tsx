@@ -26,7 +26,7 @@ export default function LatestProducts() {
 
 
     useEffect(() => {
-        axios.get('http://localhost:8000/api/v1/latest-products/')
+        axios.get('http://localhost/api/v1/latest-products/')
             .then(function (response) {
                 setLatestProducts(response.data);
             })

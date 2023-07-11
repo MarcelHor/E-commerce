@@ -19,7 +19,7 @@ const CategoryItem = ({category}: CategoryItemProps) => {
             className="flex px-4 space-x-4 items-center border border-gray-200 rounded-lg shadow-md hover:shadow-xl transition duration-300 h-20 w-64"
         >
             <img
-                src={'http://localhost:8000' + category.get_thumbnail}
+                src={'http://localhost' + category.get_thumbnail}
                 alt={category.name}
                 className="w-12 h-12"
             />

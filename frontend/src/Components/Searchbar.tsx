@@ -21,7 +21,7 @@ function Searchbar() {
     useEffect(() => {
         if (searchTerm) {
             axios
-                .get(`http://localhost:8000/api/v1/products/search?q=${searchTerm}`)
+                .get(`http://localhost/api/v1/products/search?q=${searchTerm}`)
                 .then(response => setProducts(response.data))
                 .catch(error => console.error(error));
         } else {
@@ -52,7 +52,7 @@ function Searchbar() {
                             <Link key={product.id} className="flex mb-4 bg-white items-center hover:bg-gray-200 p-2"
                                   to={`${product.get_absolute_url}`}>
                                 <img
-                                    src={`http://localhost:8000${product.get_thumbnail}`}
+                                    src={`http://localhost${product.get_thumbnail}`}
                                     alt={product.name}
                                     className="h-16 object-contain"
                                 />

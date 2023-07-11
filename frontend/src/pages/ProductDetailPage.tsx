@@ -28,7 +28,7 @@ export default function ProductDetailPage() {
     const [quantity, setQuantity] = useState(1);
 
     const fetchProductDetail = async () => {
-        let baseUrl = "http://localhost:8000/api/v1/products";
+        let baseUrl = "http://localhost/api/v1/products";
         if (subcategory) {
             baseUrl += `/${category}/${subcategory}/product/${slug}`;
         } else {
@@ -62,7 +62,7 @@ export default function ProductDetailPage() {
         <div className="flex flex-col md:flex-row justify-center items-center bg-white text-black py-10 mt-5 mx-4 md:mx-32">
             <div className="w-full md:w-1/2 flex justify-center items-center">
                 <img
-                    src={`http://localhost:8000${product.get_image}`}
+                    src={`http://localhost${product.get_image}`}
                     alt={product.name}
                     className="w-3/4 md:w-1/2"
                 />

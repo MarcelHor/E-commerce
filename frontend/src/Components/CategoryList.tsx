@@ -18,7 +18,6 @@ export default function CategoryList() {
             .get('http://127.0.0.1:8000/api/v1/products')
             .then((res) => {
                 setCategories(res.data);
-                console.log(res.data);
             })
             .catch((err) => {
                 console.log(err);

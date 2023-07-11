@@ -30,8 +30,7 @@ const CheckoutPage = () => {
             return;
         }
 
-        console.log(data);
-        axios.post("http://localhost:8000/api/v1/orders/", data)
+        axios.post("http://localhost/api/v1/orders/", data)
             .then(response => {
                 if(response.status === 201)
                     clearCart();

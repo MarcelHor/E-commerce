@@ -25,7 +25,7 @@ export default function CartPage() {
                             <div key={index} className="shadow-md w-4/5 mb-8">
                                 <div className="flex items-center justify-between mx-8 flex-wrap ">
                                     <img
-                                        src={`http://localhost:8000${cart[key].product.get_thumbnail}`}
+                                        src={`http://localhost${cart[key].product.get_thumbnail}`}
                                         alt={cart[key].product.name}
                                         className="w-24 h-32 object-contain"
                                     />

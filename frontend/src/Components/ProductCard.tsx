@@ -32,7 +32,7 @@ export default function ProductCard({product}: ProductBoxProps) {
                 <Link to={`${product.get_absolute_url}`}>
                     <img
                         className="object-contain h-56"
-                        src={`http://localhost:8000${product.get_thumbnail}`}
+                        src={`http://localhost${product.get_thumbnail}`}
                         alt=""
                     />
                     <div className="flex flex-col justify-between p-6 w-full">
