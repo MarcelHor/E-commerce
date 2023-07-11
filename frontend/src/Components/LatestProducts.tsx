@@ -1,6 +1,6 @@
 import axios from "axios";
 import {useEffect, useState} from "react";
-import ProductBox from "./ProductBox.tsx";
+import ProductCard from "./ProductCard.tsx";
 import 'react-multi-carousel/lib/styles.css';
 import Carousel from 'react-multi-carousel';
 
@@ -26,7 +26,7 @@ export default function LatestProducts() {
 
 
     useEffect(() => {
-        axios.get('http://localhost:8000/api/v1/latest-products/')
+        axios.get('http://localhost/api/v1/latest-products/')
             .then(function (response) {
                 setLatestProducts(response.data);
             })
@@ -37,10 +37,10 @@ export default function LatestProducts() {
 
     return (
         <>
-            <section className="bg-white lg:px-32 mb-16">
+            <section className="bg-white lg:px-32 mb-16 py-8">
                 <div className="mx-auto">
-                    <h1 className="text-center text-2xl font-medium mb-8 pb-4">
-                        Latest Products
+                    <h1 className="text-center text-2xl font-medium mb-8">
+                        Latest Products:
                     </h1>
                     <Carousel
                         swipeable={true}
@@ -61,15 +61,9 @@ export default function LatestProducts() {
                         className="p-2"
                     >
                         {latestProducts.map((product: any) => (
-                            <ProductBox
+                            <ProductCard
                                 key={product.id}
-                                id={product.id}
-                                name={product.name}
-                                price={product.price}
-                                image={product.get_image}
-                                thumbnail={product.get_thumbnail}
-                                description={product.description}
-                                url={product.get_absolute_url}
+                                product={product}
                             />
                         ))}
                     </Carousel>

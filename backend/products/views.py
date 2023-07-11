@@ -1,6 +1,5 @@
 from django.db.models import Q
 from django.http import Http404
-from django.shortcuts import render
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -9,43 +8,45 @@ from .models import Product, Category
 
 
 class LatestProductsList(APIView):
-    def get(self, request, format=None):
+    def get(self, request):
         products = Product.objects.all()[0:4]
         serializer = ProductSerializer(products, many=True)
         return Response(serializer.data)
 
 
-class ProductDetail(APIView):
-
-    def get(self, request, category_slug, product_slug, format=None):
+class ProductDetailPage(APIView):
+    def get(self, request, parent_category, child_category=None, product_slug=None):
         try:
-            product = Product.objects.filter(category__slug=category_slug).get(slug=product_slug)
+            if child_category is not None and product_slug is not None:
+                product = Product.objects.filter(category__parent__slug=parent_category, category__slug=child_category).get(slug=product_slug)
+            elif product_slug is not None: # case where there is no child category but there is a product
+                product = Product.objects.filter(category__slug=parent_category).get(slug=product_slug)
+            else:
+                raise Http404
             serializer = ProductSerializer(product)
             return Response(serializer.data)
         except Product.DoesNotExist:
             raise Http404
 
 
-
-
-
 class CategoryDetail(APIView):
-    def get_object(self, category_slug):
+    def get(self, request, parent_category, child_category=None):
         try:
-            return Category.objects.get(slug=category_slug)
+            if child_category is not None:
+                category = Category.objects.filter(parent__slug=parent_category).get(slug=child_category)
+                serializer = CategorySerializer(category)
+            else:
+                categories = Category.objects.filter(slug=parent_category)
+                serializer = CategorySerializer(categories, many=True)
+            return Response(serializer.data)
         except Category.DoesNotExist:
             raise Http404
 
-    def get(self, request, category_slug, format=None):
-        category = self.get_object(category_slug)
-        serializer = CategorySerializer(category)
-        return Response(serializer.data)
 
-
-class CategoriesList(APIView):
-    def get(self, request, format=None):
-        categories = Category.objects.all()
-        serializer = CategoriesListSerializer(categories, many=True)
+class CategoryList(APIView):
+    def get(self, request):
+        root_categories = Category.objects.filter(parent=None)
+        serializer = CategoriesListSerializer(root_categories, many=True)
         return Response(serializer.data)
 
 

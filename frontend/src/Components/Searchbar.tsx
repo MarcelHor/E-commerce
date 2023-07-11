@@ -13,7 +13,7 @@ interface Product {
     in_stock: boolean;
 }
 
-function SearchBar() {
+function Searchbar() {
     const [searchTerm, setSearchTerm] = useState('');
     const [products, setProducts] = useState<Product[]>([]);
     const location = useLocation();
@@ -21,7 +21,7 @@ function SearchBar() {
     useEffect(() => {
         if (searchTerm) {
             axios
-                .get(`http://localhost:8000/api/v1/products/search?q=${searchTerm}`)
+                .get(`http://localhost/api/v1/products/search?q=${searchTerm}`)
                 .then(response => setProducts(response.data))
                 .catch(error => console.error(error));
         } else {
@@ -50,9 +50,9 @@ function SearchBar() {
                     <div className="mt-4 bg-white p-2 z-10 absolute w-full">
                         {products.map(product => (
                             <Link key={product.id} className="flex mb-4 bg-white items-center hover:bg-gray-200 p-2"
-                                  to={`/products${product.get_absolute_url}`}>
+                                  to={`${product.get_absolute_url}`}>
                                 <img
-                                    src={`http://localhost:8000${product.get_thumbnail}`}
+                                    src={`http://localhost${product.get_thumbnail}`}
                                     alt={product.name}
                                     className="h-16 object-contain"
                                 />
@@ -70,4 +70,4 @@ function SearchBar() {
     );
 }
 
-export default SearchBar;
+export default Searchbar;
