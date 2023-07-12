@@ -63,7 +63,7 @@ const InfoCarousel = () => {
                                 {slide.text}
                             </span>
                             <span
-                                className="text-white lg:text-2xl text-xl font-bold">
+                                className="text-white lg:text-2xl text-sm font-bold">
                                 {slide.description}
                             </span>
                         </div>

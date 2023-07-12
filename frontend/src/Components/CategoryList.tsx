@@ -15,7 +15,7 @@ export default function CategoryList() {
 
     useEffect(() => {
         axios
-            .get('http://127.0.0.1:8000/api/v1/products')
+            .get('https://eshopapi.marcel-horvath.me/api/v1/products')
             .then((res) => {
                 setCategories(res.data);
             })

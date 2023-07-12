@@ -25,7 +25,7 @@ export default function CartPage() {
                             <div key={index} className="shadow-md w-4/5 mb-8">
                                 <div className="flex items-center justify-between mx-8 flex-wrap ">
                                     <img
-                                        src={`http://localhost${cart[key].product.get_thumbnail}`}
+                                        src={`https://eshopapi.marcel-horvath.me${cart[key].product.get_thumbnail}`}
                                         alt={cart[key].product.name}
                                         className="w-24 h-32 object-contain"
                                     />
@@ -33,8 +33,7 @@ export default function CartPage() {
                                     <div className="flex flex-col space-y-2">
                                         <span className="label">Name:</span>
                                         <span className="font-semibold">{cart[key].product.name}</span>
-                                        <span
-                                            className={`${cart[key].product.in_stock ? "text-green-500" : "text-red-500"}`}> {cart[key].product.in_stock ? "In stock" : "Out of stock"}</span>
+                                        <span className={`${cart[key].product.in_stock ? "text-green-500" : "text-red-500"}`}> {cart[key].product.in_stock ? "In stock" : "Out of stock"}</span>
                                     </div>
 
                                     <div className="flex flex-col items-center space-y-2">

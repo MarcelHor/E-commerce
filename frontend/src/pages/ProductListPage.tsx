@@ -64,7 +64,7 @@ export default function ProductListPage() {
     }, [name]);
 
     useEffect(() => {
-        let apiUrl = `http://localhost/api/v1/products/${category}`;
+        let apiUrl = `https://eshopapi.marcel-horvath.me/api/v1/products/${category}`;
 
         if (subcategory) {
             apiUrl += `/${subcategory}`;

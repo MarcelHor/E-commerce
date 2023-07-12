@@ -30,7 +30,7 @@ const CheckoutPage = () => {
             return;
         }
 
-        axios.post("http://localhost/api/v1/orders/", data)
+        axios.post("https://eshopapi.marcel-horvath.me/api/v1/orders/", data)
             .then(response => {
                 if(response.status === 201)
                     clearCart();
