@@ -51,6 +51,7 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',
     'https://localhost',
     'http://localhost',
+    'https://eshop.marcel-horvath.me',
 ]
 
 MIDDLEWARE = [
@@ -74,10 +75,13 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
-EMAIL_USE_TLS = False
+EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
 
 TEMPLATES = [
@@ -142,10 +146,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
 MEDIA_URL = '/media/'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+
 
 
 # Default primary key field type
@@ -153,7 +160,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'django']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'django', 'eshopapi.marcel-horvath.me', 'eshop.marcel-horvath.me', '164.92.252.180']
 
 USE_X_FORWARDED_HOST = True
 USE_X_FORWARDED_PORT = True

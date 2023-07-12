@@ -86,18 +86,7 @@ export const CartContext = ({children}: any) => {
         <CartProvider.Provider value={{cart, addToCart, removeFromCart, clearCart, getCartTotal, getCartCount}}>
             {children}
             {showPopup && (
-                <div
-                    style={{
-                        position: "fixed",
-                        bottom: "20px",
-                        right: "20px",
-                        backgroundColor: "lightgreen",
-                        padding: "10px",
-                        borderRadius: "5px",
-                        color: "white",
-                        fontWeight: "bold",
-                    }}
-                >
+                <div className="fixed bottom-0 right-0 bg-green-500 text-white p-2 m-2 rounded">
                     Item added to cart!
                 </div>
             )}

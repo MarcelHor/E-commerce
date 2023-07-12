@@ -26,7 +26,7 @@ export default function LatestProducts() {
 
 
     useEffect(() => {
-        axios.get('http://localhost/api/v1/latest-products/')
+        axios.get('https://eshopapi.marcel-horvath.me/api/v1/latest-products/')
             .then(function (response) {
                 setLatestProducts(response.data);
             })
@@ -57,7 +57,7 @@ export default function LatestProducts() {
                         containerClass="carousel-container"
                         removeArrowOnDeviceType={["tablet", "mobile"]}
                         dotListClass="custom-dot-list-style"
-                        itemClass="carousel-item-padding-40-px"
+                        itemClass="carousel-item-padding-40-px mx-4"
                         className="p-2"
                     >
                         {latestProducts.map((product: any) => (

@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import {useEffect} from 'react';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faTimes} from '@fortawesome/free-solid-svg-icons';
 
 interface PopupModalProps {
     isPopupOpen: boolean;
@@ -28,12 +28,19 @@ export default function PopupModal(props: PopupModalProps) {
     }
 
     return (
-        <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-30 z-10 text-black" onClick={() => props.setisPopupOpen(false)}>
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white md:w-1/2 w-full h-2/3 rounded-lg" onClick={(event) => event.stopPropagation()}>
-                <FontAwesomeIcon icon={faTimes} size="2x" className="absolute top-2 right-2 cursor-pointer" onClick={() => {
-                    props.setisPopupOpen(false);
-                    localStorage.setItem('isPopupOpen', 'false');
-                }}/>
+        <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-30 z-10 text-black"
+             onClick={() => {
+                 props.setisPopupOpen(false);
+                 localStorage.setItem('isPopupOpen', 'false');
+             }}>
+            <div
+                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white md:w-1/2 w-full h-2/3 rounded-lg"
+                onClick={(e) => e.stopPropagation()}>
+                <FontAwesomeIcon icon={faTimes} size="2x" className="absolute top-2 right-2 cursor-pointer"
+                                 onClick={() => {
+                                     props.setisPopupOpen(false);
+                                     localStorage.setItem('isPopupOpen', 'false');
+                                 }}/>
                 {props.children}
             </div>
         </div>
