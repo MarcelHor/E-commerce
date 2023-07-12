@@ -1,5 +1,4 @@
 # E-commerce
-
 ## Description
 Template for an e-commerce site. Built with React, Tailwind and Django rest framework.
 
